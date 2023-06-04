@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import Navigation from '../components/Navigation.astro'
+---
+
+<Layout title="two friends'">
+	<main class="p-2 w-1/2 mx-auto flex flex-col justify-between dark:text-white">
+		<div class="flex flex-col gap-2">
+			<h1 class="text-2xl">Our work and findings</h1>
+			<p>
+				We are two friends who like to work together on different things. 
+				We both have engineering background and a huge passion for technology and education.
+			</p>
+			<div class="flex flex-col mt-10 text-[15px]">
+				<ul class="divide-y divide-zinc-900">
+					<li class="py-1 flex justify-between">
+						<span>React Hook to identify if audio is active</span>
+						<span class="uppercase text-black/40 dark:text-white/40">guide ~ 2022</span>
+					</li>
+					<li class="py-1 flex justify-between">
+						<span>Integrate Sanity with existing NextJS project</span>
+						<span class="uppercase text-black/40 dark:text-white/40">process ~ 2023</span>
+					</li>
+					<li class="py-1 flex justify-between">
+						<span>Wavy background with ThreeJS</span>
+						<span class="uppercase text-black/40 dark:text-white/40">experiment ~ 2023</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<footer class="text-black/40 dark:text-white/40">
+			© 2014-2023 Olzhas Kurikov and Dinmuhamed Sailaubek. All Right Reserved.
+		</footer>
+	</main>
+</Layout>

@@ -1,0 +1,59 @@
+---
+import Navigation from '../components/Navigation.astro'
+import '../styles/main.css';
+
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preload" href="/fonts/WixMadefor.woff" as="font" type="font/woff" crossorigin />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="bg-[#f6f6f1] dark:bg-black">
+		<Navigation />
+		<slot />
+	</body>
+</html>
+
+<script is:inline>
+	const theme = (() => {
+		if (typeof localStorage != 'undefined' && localStorage.getItem('theme'))
+			return localStorage.getItem('theme')
+
+		if (window.matchMedia('(prefers-color-scheme)').matches)
+			return 'dark'
+
+		return 'light'
+	})()
+
+	if (theme == 'light') document.documentElement.classList.remove('dark')
+	else document.documentElement.classList.add('dark')
+
+	window.localStorage.setItem('theme', theme)
+</script>
+
+<style is:global>
+	:root {
+		--accent: 124, 58, 237;
+		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+	}
+	body {
+		padding: 8px;
+		height: 100vh;
+	}
+	html {
+		font-family: 'Wix Madefor Text', system-ui, sans-serif;
+		background-color: #F6F6F1;
+	}
+</style>
