@@ -1,10 +1,8 @@
 ---
-import Navigation from '../components/Navigation.astro'
+import Navigation from '@components/Navigation.astro'
 import '../styles/main.css';
 
-export interface Props {
-	title: string;
-}
+export type Props = { title: string }
 
 const { title } = Astro.props;
 ---

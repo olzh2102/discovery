@@ -1,26 +1,18 @@
 ---
 import { getEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
 
-import Layout from '../../../layouts/Layout.astro';
- 
-
-const posts = await getCollection('post');
-console.log("🚀 ~ file: [...slug].astro:7 ~ posts:", posts)
-
-const { lang, slug } = Astro.params;
-console.log("🚀 ~ file: [...slug].astro:7 ~ slug:", slug)
-console.log("🚀 ~ file: [...slug].astro:6 ~ lang:", lang)
-
-const page = await getEntry('post', slug);
-
-console.log("🚀 ~ file: [...slug].astro:10 ~ page:", page)
-if (!page) {
-  return Astro.redirect('/404');
+type Params = {
+  lang: 'en' | 'ru';
+  slug: 'use-audio' | 'use-screen' | 'https' | 'horizontal-scroll'
 }
+ 
+const { slug } = Astro.params as Params;
+const page = await getEntry({collection: 'post', slug});
 
-const formattedDate = page.data.date.toLocaleString(lang);
-const { Content, headings } = await page.render();
+if (!page) return Astro.redirect('/404');
+
+const { Content } = await page.render();
 ---
 <Layout title={page.data.title}>
     <Content />
