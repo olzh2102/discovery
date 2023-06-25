@@ -14,16 +14,19 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preload" href="/fonts/WixMadefor.woff" as="font" type="font/woff" crossorigin />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="bg-[#f6f6f1] dark:bg-black relative">
+	<body class="bg-[#f6f6f1] dark:bg-black relative flex flex-col h-screen p-2">
 		<Navigation />
-		<slot />
-		<footer class="text-black/40 dark:text-white/40">
+		<main class="flex-1">
+			<slot />
+		</main>
+		<footer class="text-black/40 dark:text-white/40 text-center">
 			© 2014-2023 Olzhas Kurikov and Dinmuhamed Sailaubek. All Right Reserved.
 		</footer>
 	</body>
@@ -51,19 +54,8 @@ const { title } = Astro.props;
 		--accent: 124, 58, 237;
 		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
 	}
-	body {
-		padding: 8px;
-		min-height: 100vh;
-	}
 	html {
 		font-family: 'Wix Madefor Text', system-ui, sans-serif;
 		background-color: #F6F6F1;
-	}
-	footer {
-		position: absolute;
-		bottom: 0;
-		height: 2.5rem;
-		width: 100%;
-		text-align: center;
 	}
 </style>

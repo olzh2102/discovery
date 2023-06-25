@@ -1,0 +1,27 @@
+---
+import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+import Layout from '../../../layouts/Layout.astro';
+ 
+
+const posts = await getCollection('post');
+console.log("🚀 ~ file: [...slug].astro:7 ~ posts:", posts)
+
+const { lang, slug } = Astro.params;
+console.log("🚀 ~ file: [...slug].astro:7 ~ slug:", slug)
+console.log("🚀 ~ file: [...slug].astro:6 ~ lang:", lang)
+
+const page = await getEntry('post', slug);
+
+console.log("🚀 ~ file: [...slug].astro:10 ~ page:", page)
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+const formattedDate = page.data.date.toLocaleString(lang);
+const { Content, headings } = await page.render();
+---
+<Layout title={page.data.title}>
+    <Content />
+</Layout>
