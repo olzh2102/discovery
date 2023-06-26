@@ -1,0 +1,15 @@
+---
+const languages = { en: 'EN', ru: 'RU' }
+const entries = Object.entries(languages)
+
+const { lang } = Astro.params;
+const { pathname } = Astro.url;
+---
+
+{lang && <ul class="flex gap-1">
+  {entries.map(([language, label]) => (
+    <li>
+      <a href={pathname.replace(lang, language)} class={language === lang ? 'line-through' : ''}>{label}</a>
+    </li>
+  ))}
+</ul>}

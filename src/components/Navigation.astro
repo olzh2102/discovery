@@ -1,19 +1,22 @@
 ---
 import ThemeToggle from "@components/ThemeToggle";
+import LanguagePicker from "@components/LanguagePicker.astro";
 
-const currentPath = new URL(Astro.request.url).pathname.slice(1);
+const { lang } = Astro.params
+const currentPath = Astro.url.pathname.slice(1).replace(String(lang) + '/', '')
 ---
 
 <header class="flex justify-between darK:text-red-500 dark:text-white">
     <nav>
         <a class={currentPath == '' ? 'line-through' : ''} href="/">Home</a>
-        <a class={currentPath == 'timeline' ? 'line-through' : ''} href="/timeline">Timeline</a>
-        <a class={currentPath == 'photography' ? 'line-through' : ''} href="/photography">Photography</a>
+        <a class={currentPath == 'timeline' ? 'line-through' : ''} href="timeline">Timeline</a>
+        <a class={currentPath == 'photography' ? 'line-through' : ''} href="photography">Photography</a>
     </nav>
     <div>
         <a href="#">Instagram</a>
         <a href="#">Tiktok</a>
         <a href="#">LinkedIn</a>
         <ThemeToggle client:load />
+        <LanguagePicker />
     </div>
 </header>

@@ -5,10 +5,11 @@ import '../styles/main.css';
 export type Props = { title: string }
 
 const { title } = Astro.props;
+const { lang } = Astro.params;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -21,7 +22,7 @@ const { title } = Astro.props;
 	</head>
 	<body class="bg-[#f6f6f1] dark:bg-black relative flex flex-col h-screen p-2">
 		<Navigation />
-		<main class="flex-1">
+		<main class="flex-1 p-2 w-1/2 mx-auto flex flex-col justify-between dark:text-white">
 			<slot />
 		</main>
 		<footer class="text-black/40 dark:text-white/40 text-center">
