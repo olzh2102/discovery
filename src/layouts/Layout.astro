@@ -17,12 +17,17 @@ const { lang } = Astro.params;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preload" href="/fonts/WixMadefor.woff" as="font" type="font/woff" crossorigin />
+		<link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/atom-one-dark.min.css"
+    />
+    <script is:inline src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="bg-[#f6f6f1] dark:bg-black relative flex flex-col h-screen p-2">
+	<body class="bg-[#f6f6f1] dark:bg-black relative flex flex-col p-2">
 		<Navigation />
-		<main class="flex-1 p-2 w-1/2 mx-auto flex flex-col justify-between dark:text-white">
+		<main class="flex-1 p-2 w-1/2 mx-auto flex flex-col gap-3 dark:text-white">
 			<slot />
 		</main>
 		<footer class="text-black/40 dark:text-white/40 text-center">
@@ -32,6 +37,8 @@ const { lang } = Astro.params;
 </html>
 
 <script is:inline>
+	// hljs.highlightAll();
+
 	const theme = (() => {
 		if (typeof localStorage != 'undefined' && localStorage.getItem('theme'))
 			return localStorage.getItem('theme')
