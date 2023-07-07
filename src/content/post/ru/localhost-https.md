@@ -118,30 +118,63 @@ CMD [ "/run.sh" ]
 
 При запуске нашего прокси-сервиса первым делом выполняется shell-скрипт из файла `run.sh`. В этом скрипте выполняются следующие действия:
 - создание приватного ключа с помощью шифрования Diffie-Hellman parameters
-- создание приватный ключа + самоподписанного сертификата для локального хоста
+- создание приватного ключа + самоподписанного сертификата для локального хоста
 
 Давайте сперва разберем код по строчке и дальше мы вам скажем зачем мы это делаем в принципе.
 
-```
+```bash
 #!/bin/bash
 ```
 
 это называется shebang или hashbang и это специальная директива, которая идет всегда и исключительно в начале файла скрипта, тем самым указывает операционнай системе, какой интерпретатор использовать для выполнения скрипта.
-Вышеуказанном примере скрипт будет выполняется в оболочке Bash.
+В вышеуказанном примере скрипт будет выполняется в оболочке Bash.
 
-```
+```bash
 set -e
 ```
 
 это команда также специальная директива, которая позволяет остановливать чтение скрипта при первой ошибке. Основная задача `set -e` это гарантированно ловить ошибку и выходить из программы не дав интерпретару продолжения чтения скрипта, так как это может привезсти к неожиданным результатам.
 
-Теперь мы пристумаем к основной части нашего скрипта.
+Теперь мы приступаем к основной части нашего скрипта.
 
-```
-if [ ! -f "/var/proxy/ssl-dhparams.pem" ]; then
-echo "dhparams.pem does not exist - creating it"
-openssl dhparam -out /var/proxy/ssl-dhparams.pem 2048
+```bash
+if [ ! -f "/etc/nginx/certs/localhost.crt" ]; then
+  echo "No SSL cert - creating it"
+  
+  openssl req -x509 -out /etc/nginx/certs/localhost.crt \
+    -keyout /etc/nginx/certs/localhost.key \
+    -newkey rsa:2048 -nodes -sha256 \
+    -subj '/CN=localhost' -extensions EXT -config <( \
+    printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 fi
 ```
 
-Проверка есть ли у нас в директори /var/proxy/ssl-dhparams.pem параметры Diffie-Hellman, и при отсутствии мы создаем его с помощью openssl команды с параметром dhparam с длинною 2048 бит.
+Проверка на наличие SSL-сертификата и ключа для локального сервера. 
+- openssl req - запрос на создание и подпись сертификата
+- x509 - указание создать самоподписанный сертификат
+
+```
+server {
+  listen 443 ssl;
+  server_name localhost;
+
+  ssl_certificate /etc/nginx/certs/localhost.crt;
+  ssl_certificate_key /etc/nginx/certs/localhost.key;
+
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+  location / {
+    proxy_pass http://frontend:3000;
+    
+    include /etc/nginx/proxy_params;
+  }
+}
+```
+
+Конфигурация прокси сервиса на nginx для прослушивания защищенных запросов на порту 443 с использованием SSL указывая на сертификат и ключ. Дополнительно усиливая защиту с помощью параметров 
+
+```
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection "upgrade";
+```
