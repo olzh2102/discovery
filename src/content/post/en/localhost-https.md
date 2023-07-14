@@ -5,7 +5,7 @@ author: Toby
 description: Dundir Mufflin, this is Pam
 draft: false
 category: JavaScript
-slug: https
+slug: https-wild-west
 ---
 
 Here will be some text about Horizontal Wrapper

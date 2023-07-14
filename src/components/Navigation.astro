@@ -8,7 +8,7 @@ const currentPath = Astro.url.pathname.slice(1).replace(String(lang) + '/', '')
 
 <header class="flex justify-between darK:text-red-500 dark:text-white">
     <nav>
-        <a class={currentPath == '' ? 'line-through' : ''} href="/">Home</a>
+        <a class={currentPath == '' ? 'line-through' : ''} href={`/${lang}/`}>Home</a>
         <a class={currentPath == 'timeline' ? 'line-through' : ''} href="timeline">Timeline</a>
         <a class={currentPath == 'photography' ? 'line-through' : ''} href="photography">Photography</a>
     </nav>

@@ -21,11 +21,11 @@ const { lang } = Astro.params;
       rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/atom-one-dark.min.css"
     />
-    <script is:inline src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+    <script is:inline src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="bg-[#f6f6f1] dark:bg-black relative flex flex-col p-2">
+	<body class="bg-[#f6f6f1] dark:bg-black relative flex flex-col p-2 min-h-screen">
 		<Navigation />
 		<main class="flex-1 p-2 w-1/2 mx-auto flex flex-col gap-3 dark:text-white">
 			<slot />

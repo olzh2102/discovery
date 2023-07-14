@@ -5,7 +5,7 @@ author: Toby
 description: Dundir Mufflin, this is Pam
 draft: false
 category: JavaScript
-slug: https
+slug: localhost-https-soviet
 ---
 
 # Локальный сервер на HTTPS (без установки библиотек на вашу машину 😉)

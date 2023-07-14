@@ -1,15 +1,17 @@
 ---
-const languages = { en: 'EN', ru: 'RU' }
-const entries = Object.entries(languages)
+import { LOCALES } from '@common/constants'
+
+const locales = Object.keys(LOCALES)
 
 const { lang } = Astro.params;
-const { pathname } = Astro.url;
 ---
 
 {lang && <ul class="flex gap-1">
-  {entries.map(([language, label]) => (
+  {locales.map((locale) => (
     <li>
-      <a href={pathname.replace(lang, language)} class={language === lang ? 'line-through' : ''}>{label}</a>
+      <a href={`/${locale}/`} class={(locale === lang ? 'line-through' : '') + ' uppercase'}>
+        {locale}
+      </a>
     </li>
   ))}
 </ul>}
