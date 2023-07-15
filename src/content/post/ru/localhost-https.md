@@ -177,7 +177,9 @@ server {
 
 Конфигурация прокси сервиса на nginx для прослушивания защищенных запросов на порту 443 с использованием SSL указывая на сертификат и ключ. Дополнительно усиливая защиту с помощью параметров 
 
-```
+```bash
+# ./proxy/nginx/proxy_params
+
 proxy_http_version 1.1;
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection "upgrade";

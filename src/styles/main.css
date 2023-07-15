@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html.dark {
+    --pre-bg-image: linear-gradient(rgb(0 0 0/50%) 0 0);
+}
+
+body {
+    min-height: 100vh;
+}
+
 @layer base {
     @font-face {
         font-family: 'Wix Madefor Text';
@@ -20,4 +28,10 @@
     h3 {
         @apply text-lg;
     }
+}
+
+pre {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-image: var(--pre-bg-image);
 }
