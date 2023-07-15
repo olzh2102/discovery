@@ -138,6 +138,8 @@ set -e
 Теперь мы приступаем к основной части нашего скрипта.
 
 ```bash
+# ./proxy/run.sh
+
 if [ ! -f "/etc/nginx/certs/localhost.crt" ]; then
   echo "No SSL cert - creating it"
   
@@ -153,7 +155,9 @@ fi
 - openssl req - запрос на создание и подпись сертификата
 - x509 - указание создать самоподписанный сертификат
 
-```
+```bash
+# ./proxy/nginx/default.conf.tpl
+
 server {
   listen 443 ssl;
   server_name localhost;
@@ -161,7 +165,7 @@ server {
   ssl_certificate /etc/nginx/certs/localhost.crt;
   ssl_certificate_key /etc/nginx/certs/localhost.key;
 
-  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+  add_header Strict-Transport-Security "max-age=31536000" always;
 
   location / {
     proxy_pass http://frontend:3000;
