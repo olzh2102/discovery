@@ -1,9 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '@layouts/Layout.astro';
+import Layout from '@layouts/BaseLayout.astro';
+import { LOCALES } from '@common/constants';
 
-const { lang } = Astro.params
+const { lang } = Astro.params as {lang: keyof typeof LOCALES}
 
+if (!(lang in LOCALES)) return Astro.redirect('/en/');
 const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`));
 ---
 
@@ -15,12 +17,12 @@ const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`))
 			We both have engineering background and a huge passion for technology and education.
 		</p>
 		<div class="flex flex-col mt-10 text-[15px]">
-			<ul class="divide-y divide-zinc-900">
+			<ul class="divide-y divide-zinc-400">
 				{posts.map((post) => (
 					<li>
 						<a class="py-1 flex justify-between" href={`post/${post.slug}`}>
 							<span>{post.data.title}</span>
-							<span class="uppercase text-black/40 dark:text-white/40">guide ~ 2022</span>
+							<span class="uppercase text-black/40 dark:text-white/40">guide ~ {post.data.date.toLocaleDateString(LOCALES[lang])}</span>
 						</a>
 					</li>
 				))}

@@ -1,19 +1,17 @@
 ---
 import { getEntry } from 'astro:content';
-import Layout from '@layouts/Layout.astro';
+import type { LOCALES } from '@common/constants';
 
 type Params = {
-  lang: 'en' | 'ru';
+  lang: keyof typeof LOCALES;
   slug: 'use-audio' | 'use-screen' | 'https' | 'horizontal-scroll'
-}
+};
  
 const { slug } = Astro.params as Params;
-const page = await getEntry({collection: 'post', slug});
+const page = await getEntry('post', slug);
 
-if (!page) return Astro.redirect('/404');
+if (!page) return Astro.redirect('/404/');
 
 const { Content } = await page.render();
 ---
-<Layout title={page.data.title}>
-    <Content />
-</Layout>
+<Content />

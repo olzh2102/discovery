@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html.dark {
+    --pre-bg-image: linear-gradient(rgb(0 0 0/50%) 0 0);
+}
+
+body {
+    min-height: 100vh;
+}
+
 @layer base {
     @font-face {
         font-family: 'Wix Madefor Text';
@@ -10,4 +18,20 @@
         font-display: block;
         src: url('/fonts/WixMadefor.woff') format('woff');
     }
+    
+    h1 {
+        @apply text-2xl font-bold;
+    }
+    h2 {
+        @apply text-xl font-semibold;
+    }
+    h3 {
+        @apply text-lg;
+    }
+}
+
+pre {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-image: var(--pre-bg-image);
 }

@@ -10,5 +10,11 @@ export default defineConfig({
     config: {
       applyBaseStyles: false
     }
-  }), react()]
+  }), react()],
+  markdown: {
+    shikiConfig: {
+      theme: 'material-theme-palenight',
+    },
+    extendDefaultPlugins: true,
+  },
 });
