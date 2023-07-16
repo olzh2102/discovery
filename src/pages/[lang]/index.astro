@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '@layouts/Layout.astro';
+import Layout from '@layouts/BaseLayout.astro';
 import { LOCALES } from '@common/constants';
 
 const { lang } = Astro.params as {lang: keyof typeof LOCALES}

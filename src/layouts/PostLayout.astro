@@ -1,12 +1,10 @@
 ---
-import Layout from './Layout.astro';
+import BaseLayout from './BaseLayout.astro';
 
 const { frontmatter } = Astro.props;
 ---
 
-<Layout title={frontmatter.title}>
-  <p>Published on: {new Date(frontmatter.date).toLocaleDateString('en-GB')}</p>
-  <p>Written by {frontmatter.author}</p>
+<BaseLayout title={frontmatter.title}>
   <slot />
   <ul class="flex gap-1.5">
     {frontmatter.tags.map((tag: string) => (
@@ -15,7 +13,7 @@ const { frontmatter } = Astro.props;
       </li>
     ))}
   </ul>
-</Layout>
+</BaseLayout>
 
 <script is:inline>
 	const codeBlocks = document.querySelectorAll("pre")
