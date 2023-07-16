@@ -1,4 +1,5 @@
 ---
+layout: ../../../layouts/PostLayout.astro
 title: Локальный сервер на HTTPS (без установки библиотек на вашу машину 😉)
 date: 2022-11-20
 author: Toby
@@ -6,6 +7,7 @@ description: Dundir Mufflin, this is Pam
 draft: false
 category: JavaScript
 slug: localhost-https-soviet
+tags: ['JavaScript', 'nginx', 'docker']
 ---
 
 # Локальный сервер на HTTPS (без установки библиотек на вашу машину 😉)

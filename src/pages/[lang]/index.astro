@@ -17,7 +17,7 @@ const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`))
 			We both have engineering background and a huge passion for technology and education.
 		</p>
 		<div class="flex flex-col mt-10 text-[15px]">
-			<ul class="divide-y divide-zinc-900">
+			<ul class="divide-y divide-zinc-400">
 				{posts.map((post) => (
 					<li>
 						<a class="py-1 flex justify-between" href={`post/${post.slug}`}>

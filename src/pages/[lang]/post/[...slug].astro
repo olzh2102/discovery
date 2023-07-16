@@ -1,6 +1,5 @@
 ---
 import { getEntry } from 'astro:content';
-import Layout from '@layouts/Layout.astro';
 import type { LOCALES } from '@common/constants';
 
 type Params = {
@@ -15,6 +14,4 @@ if (!page) return Astro.redirect('/404/');
 
 const { Content } = await page.render();
 ---
-<Layout title={page.data.title}>
-    <Content />
-</Layout>
+<Content />

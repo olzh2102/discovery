@@ -1,0 +1,18 @@
+---
+import Layout from './Layout.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<Layout title={frontmatter.title}>
+  <p>Published on: {new Date(frontmatter.date).toLocaleDateString('en-GB')}</p>
+  <p>Written by {frontmatter.author}</p>
+  <slot />
+  <ul class="flex gap-1.5">
+    {frontmatter.tags.map((tag: string) => (
+      <li class="lowercase text-sm">
+        <a href="/#" class="p-1.5 bg-rose-900 rounded-sm">{tag}</a>
+      </li>
+    ))}
+  </ul>
+</Layout>

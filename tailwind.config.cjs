@@ -5,7 +5,7 @@ module.exports = {
 	theme: {
 		extend: {
 			backgroundImage: {
-				'grainy-indigo-900': 'linear-gradient(to right bottom, rgb(10 0 58/81%), rgba(9 0 48/92%)), url("../../public/images/noise.svg")',
+				'grainy-indigo-900': 'linear-gradient(to right bottom, rgb(10 0 58/81%), rgba(9 0 48/92%)), url("../../images/noise.svg")',
 			}
 		},
 	},

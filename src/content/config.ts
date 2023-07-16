@@ -1,4 +1,4 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, z } from 'astro:content'
 
 const post = defineCollection({
   schema: z.object({
@@ -7,14 +7,9 @@ const post = defineCollection({
     author: z.string(),
     description: z.string(),
     draft: z.boolean().default(false),
-    category: z.enum([
-      "CSS, TailwindCSS",
-      "JavaScript",
-      "NextJS",
-      "ReactJS",
-      "Test",
-    ]),
+    category: z.enum(['CSS, TailwindCSS', 'JavaScript', 'NextJS', 'ReactJS', 'Test']),
+    tags: z.array(z.string()),
   }),
-});
+})
 
-export const collections = { post };
+export const collections = { post }
