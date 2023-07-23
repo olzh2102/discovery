@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
-
 import react from "@astrojs/react";
+
+import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,8 +14,9 @@ export default defineConfig({
   }), react()],
   markdown: {
     shikiConfig: {
-      theme: 'material-theme-palenight',
+      theme: 'material-theme-palenight'
     },
-    extendDefaultPlugins: true,
+    extendDefaultPlugins: true
   },
+  adapter: cloudflare()
 });
