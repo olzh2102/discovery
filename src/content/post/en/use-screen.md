@@ -6,7 +6,7 @@ author: Michael Scott
 description: Dundir Mufflin, this is Pam
 draft: false
 category: NextJS
-slug: use-screen
+slug: use-screen-west
 tags: ['JavaScript', 'React', 'hooks', 'WebAPI']
 ---
 

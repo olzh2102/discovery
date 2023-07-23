@@ -6,7 +6,7 @@ author: Michael Scott
 description: Dundir Mufflin, this is Pam
 draft: false
 category: ReactJS
-slug: horizontal-scroll
+slug: horizontal-scroll-soviet
 tags: ['JavaScript', 'CSS']
 ---
 

@@ -6,7 +6,7 @@ author: Michael Scott
 description: Dundir Mufflin, this is Pam
 draft: false
 category: JavaScript
-slug: use-audio
+slug: use-audio-west
 tags: ['JavaScript', 'React', 'hooks', 'WebAPI']
 ---
 
