@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "discovery",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,7 +10,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^6.6.2",
     "@astrojs/react": "^2.2.1",
     "@astrojs/tailwind": "^3.1.3",
     "@astrojs/vercel": "^3.7.4",

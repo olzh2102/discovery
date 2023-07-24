@@ -4,8 +4,6 @@ import vercelServerless from '@astrojs/vercel/serverless';
  
 import react from "@astrojs/react";
 
-import cloudflare from "@astrojs/cloudflare";
-
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
@@ -21,5 +19,4 @@ export default defineConfig({
     },
     extendDefaultPlugins: true
   },
-  adapter: cloudflare()
 });
