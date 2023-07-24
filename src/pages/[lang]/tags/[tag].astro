@@ -1,23 +1,26 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '@layouts/BaseLayout.astro';
 import { LOCALES } from '@common/constants';
+import BaseLayout from '@layouts/BaseLayout.astro';
 
-const { lang } = Astro.params as {lang: keyof typeof LOCALES}
+type Params = {
+  lang: keyof typeof LOCALES;
+  tag: string
+};
+
+const { lang, tag } = Astro.params as Params;
 
 if (!(lang in LOCALES)) return Astro.redirect('/en/');
+
 const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`));
+const filteredPosts = posts.filter((post) => post.data.tags.includes(tag))
 ---
 
-<BaseLayout title="two friends'">
-	<div class="flex flex-col gap-2">
-		<h1 class="text-2xl">Our work and findings</h1>
-		<p>
-			We are two friends who like to work together on different things. 
-			We both have engineering background and a huge passion for technology and education.
-		</p>
-		<ul class="divide-y divide-zinc-400 mt-6">
-			{posts.map((post) => (
+<BaseLayout title={tag}>
+	<div class="flex flex-col gap-6">
+		<h2 class="text-2xl">Posts tagged with {tag}</h2>
+		<ul class="divide-y divide-zinc-400">
+			{filteredPosts.map((post) => (
 				<li>
 					<a class="py-1 flex justify-between" href={`/${lang}/posts/${post.slug}`}>
 						<span class="w-3/4">{post.data.title}</span>

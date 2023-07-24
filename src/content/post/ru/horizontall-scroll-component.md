@@ -7,7 +7,7 @@ description: Dundir Mufflin, this is Pam
 draft: false
 category: ReactJS
 slug: horizontal-scroll-soviet
-tags: ['JavaScript', 'CSS']
+tags: ['javascript', 'css']
 ---
 
 Here will be some text about Horizontal Wrapper

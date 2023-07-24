@@ -7,7 +7,7 @@ description: Dundir Mufflin, this is Pam
 draft: false
 category: JavaScript
 slug: https-wild-west
-tags: ['JavaScript', 'nginx', 'docker']
+tags: ['javascript', 'nginx', 'docker']
 ---
 
 Here will be some text about Horizontal Wrapper

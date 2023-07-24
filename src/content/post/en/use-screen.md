@@ -7,7 +7,7 @@ description: Dundir Mufflin, this is Pam
 draft: false
 category: NextJS
 slug: use-screen-west
-tags: ['JavaScript', 'React', 'hooks', 'WebAPI']
+tags: ['javascript', 'react', 'hooks', 'webapi']
 ---
 
 Here will be some text about Horizontal Wrapper

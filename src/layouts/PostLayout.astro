@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 
 const { frontmatter } = Astro.props;
+const { lang } = Astro.params
 ---
 
 <BaseLayout title={frontmatter.title}>
@@ -9,7 +10,7 @@ const { frontmatter } = Astro.props;
   <ul class="flex gap-1.5">
     {frontmatter.tags.map((tag: string) => (
       <li class="lowercase text-sm">
-        <a href="/#" class="p-1.5 bg-rose-900 rounded-sm">{tag}</a>
+        <a href={`/${lang}/tags/${tag}`} class="p-1.5 bg-rose-900 rounded-sm">{tag}</a>
       </li>
     ))}
   </ul>
