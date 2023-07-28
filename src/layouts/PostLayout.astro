@@ -1,52 +1,68 @@
 ---
-import BaseLayout from './BaseLayout.astro';
+import BaseLayout from './BaseLayout.astro'
 
-const { frontmatter } = Astro.props;
+const { frontmatter } = Astro.props
 const { lang } = Astro.params
 ---
 
 <BaseLayout title={frontmatter.title}>
+  <h1>{frontmatter.title}</h1>
+  <time datetime={frontmatter.date}
+    >{
+      new Date(frontmatter.date).toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      })
+    }</time
+  >
+  <span>{frontmatter.author}</span>
   <slot />
   <ul class="flex gap-1.5">
-    {frontmatter.tags.map((tag: string) => (
-      <li class="lowercase text-sm">
-        <a href={`/${lang}/tags/${tag}`} class="p-1.5 bg-rose-900 rounded-sm">{tag}</a>
-      </li>
-    ))}
+    {
+      frontmatter.tags.map((tag: string) => (
+        <li class="lowercase text-sm">
+          <a href={`/${lang}/tags/${tag}`} class="p-1.5 bg-rose-900 rounded-sm">
+            {tag}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </BaseLayout>
 
 <script is:inline>
-	const codeBlocks = document.querySelectorAll("pre")
-  
+  const codeBlocks = document.querySelectorAll('pre')
+
   codeBlocks.forEach((block) => {
     const wrapper = document.createElement('div')
     wrapper.className = 'relative group'
-    
+
     const copyButton = document.createElement('button')
     copyButton.innerText = 'copy'
-    copyButton.className = 'absolute top-1 right-2 text-transparent group-hover:text-white duration-300 transition ease-in-out'
-    block.setAttribute("tabindex", "0");
+    copyButton.className =
+      'absolute top-1 right-2 text-transparent group-hover:text-white duration-300 transition ease-in-out'
+    block.setAttribute('tabindex', '0')
     block.appendChild(copyButton)
-    
+
     block.parentNode.insertBefore(wrapper, block)
     wrapper.appendChild(block, copyButton)
 
-    copyButton.addEventListener("click", async () => {
-      await copyCode(block, copyButton);
-    });
+    copyButton.addEventListener('click', async () => {
+      await copyCode(block, copyButton)
+    })
   })
 
   async function copyCode(block, button) {
-    let code = block.querySelector("code");
-    let text = code.innerText;
+    let code = block.querySelector('code')
+    let text = code.innerText
 
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(text)
 
-    button.innerText = '✅ copied';
+    button.innerText = '✅ copied'
 
     setTimeout(() => {
-      button.innerText = 'copy';
+      button.innerText = 'copy'
     }, 1000)
   }
 </script>
