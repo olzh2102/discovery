@@ -1,23 +1,44 @@
 ---
+import { getEntry } from 'astro:content'
+import readingTime from 'reading-time'
 import BaseLayout from './BaseLayout.astro'
+import { WORDS_PER_MINUTE } from '@common/constants'
 
 const { frontmatter } = Astro.props
 const { lang } = Astro.params
+console.log(Astro.props.text)
+
+// TODO: read page from somewhere else
+const page = await getEntry('post', frontmatter.slug)
+
+if (!page) return Astro.redirect('/404/')
+
+const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
 ---
 
 <BaseLayout title={frontmatter.title}>
   <h1>{frontmatter.title}</h1>
-  <time datetime={frontmatter.date}
-    >{
-      new Date(frontmatter.date).toLocaleString(undefined, {
-        year: 'numeric',
-        month: 'long',
-        day: '2-digit',
-      })
-    }</time
-  >
-  <span>{frontmatter.author}</span>
+
+  <section class="h-[200px] flex gap-2 justify-between max-md:flex-col items-center my-8">
+    <div>post image goes here</div>
+    <div class="rounded-md border-solid border-2 border-white h-full flex flex-col p-2">
+      <span>{readingTimeText}</span>
+
+      <time datetime={frontmatter.date}>
+        {
+          new Date(frontmatter.date).toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+          })
+        }
+      </time>
+      <span>{frontmatter.author}</span>
+    </div>
+  </section>
+
   <slot />
+
   <ul class="flex gap-1.5">
     {
       frontmatter.tags.map((tag: string) => (
@@ -66,3 +87,5 @@ const { lang } = Astro.params
     }, 1000)
   }
 </script>
+
+<style></style>

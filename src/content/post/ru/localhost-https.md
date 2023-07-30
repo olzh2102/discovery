@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/PostLayout.astro
 title: Локальный сервер на HTTPS
-date: 2023-07-28
+date: 2023-07-30
 author: Dinmukhamed Sailaubek, Olzhas Kurikov
 description: Dundir Mufflin, this is Pam
 draft: false
@@ -174,13 +174,11 @@ server {
 }
 ```
 
-В этом конфигурационном файле мы:
+При использовании веб-сервера `nginx` `server` блоки можно использовать для инкапсуляции конфигурационных деталей и размещения более одного домена на одном сервере.
 
-- Слушаем на защищенном порту 443 с использованием SSL
-- Устанавливаем имя сервера
-- Настраиваем наши `ssl_certificate` и `ssl_certificate_key`, которые мы получили с помощью `openssl` и сохранили в томе `/etc/nginx/certs/`
-- Добавляем заголовок, который включает `Strict-Transport-Security`, который позволяет указать браузеру клиента всегда использовать HTTPS для нашего домена.
-- В блоке `location` передаем все запросы в `/` прокси серверу по адресу `http://frontend:3000` и устанавливаем заголовки запроса
+В нашем случае в блоке `server` `nginx` прослушивает защищенный порт 443 для всех запросов с помощью директивы `listen` и направит запросы в `http://frontend:3000` (директива `proxy_pass`).
+
+В файле `proxy_params` установлены заголовки запроса:
 
 ```bash
 # ./proxy/nginx/proxy_params
@@ -189,9 +187,5 @@ proxy_http_version 1.1;
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection "upgrade";
 ```
-
-## Заключение
-
-Не повторяйте это дома. Все персонажи и события вымышлены, любые совпадения случайны.
 
 Ссылка на репозиторий: https://github.com/evitla/nextjs-https
