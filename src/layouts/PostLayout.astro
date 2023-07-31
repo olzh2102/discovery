@@ -20,7 +20,9 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
   <h1>{frontmatter.title}</h1>
 
   <section class="h-[200px] flex gap-2 justify-between max-md:flex-col items-center my-8">
-    <div>post image goes here</div>
+    <div class="h-[200px]">
+      <img src="/assets/https_1.png" class="h-[200px]" alt="A starry night sky." />
+    </div>
     <div class="rounded-md border-solid border-2 border-white h-full flex flex-col p-2">
       <span>{readingTimeText}</span>
 
@@ -33,6 +35,7 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
           })
         }
       </time>
+
       <span>{frontmatter.author}</span>
     </div>
   </section>
@@ -88,4 +91,8 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
   }
 </script>
 
-<style></style>
+<style>
+  img[src$='#scheme-localhost-https'] { 
+    background-color: red
+  }
+</style>
