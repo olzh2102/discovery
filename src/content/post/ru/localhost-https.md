@@ -1,6 +1,6 @@
 ---
 layout: ../../../layouts/PostLayout.astro
-title: локальный сервер на https
+title: Локальный сервер на https
 date: 2023-07-30
 author: Dinmukhamed Sailaubek, Olzhas Kurikov
 description: Dundir Mufflin, this is Pam
@@ -8,9 +8,10 @@ draft: false
 category: JavaScript
 slug: localhost-https-soviet
 tags: ['javascript', 'nginx', 'docker']
+code-block-font-size: \tiny
 ---
 
-В ходе разработки того или иного веб-приложения, клиентская часть во многих случаях зависит от сервера; клиент отправляет запросы и обрабатывает ответы. 
+В ходе разработки того или иного веб-приложения, клиентская часть во многих случаях зависит от сервера; клиент отправляет запросы и обрабатывает ответы.
 В некоторых случаях при использовании
 сторонних API (Facebook, Gmail, Twitter и т.д.) требуется защищенное SSL соединение и это конечно приносит неудобства в виде тестирования, запуска фронтэнд приложения на локальной машине.
 

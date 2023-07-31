@@ -28,4 +28,29 @@ pre {
   padding: 0.5rem;
   border-radius: 0.25rem;
   background-image: var(--pre-bg-image);
+  border: 1px solid #2a243b;
+}
+
+pre > code {
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 767px) {
+  section.post pre {
+    width: calc(100vw - 2rem);
+  }
+}
+
+section.post ul {
+  list-style: circle;
+}
+
+section.post a {
+  text-decoration: underline;
+}
+
+section.post img[alt='scheme'] {
+  background-color: #9caae7;
+  margin: 5px;
+  border-radius: 5px;
 }
