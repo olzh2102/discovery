@@ -1,8 +1,10 @@
 ---
 import { getEntry } from 'astro:content'
 import readingTime from 'reading-time'
-import BaseLayout from './BaseLayout.astro'
+
 import { WORDS_PER_MINUTE } from '@common/constants'
+
+import BaseLayout from './BaseLayout.astro'
 
 const { frontmatter } = Astro.props
 const { lang } = Astro.params
@@ -70,10 +72,9 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
       const wrapper = document.createElement('div')
       wrapper.className = 'relative group'
 
-      const copyButton = document.createElement('button')
-      copyButton.innerText = 'copy'
+      const copyButton = document.createElement('copy-code-button')
       copyButton.className =
-        'absolute top-1 right-2 text-transparent group-hover:text-white duration-300 transition ease-in-out'
+        'absolute top-2 right-2 text-transparent group-hover:text-white duration-300 transition ease-in-out'
       block.setAttribute('tabindex', '0')
       block.appendChild(copyButton)
 
@@ -91,7 +92,7 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
 
       await navigator.clipboard.writeText(text)
 
-      button.innerText = '✅ copied'
+      button.appendChild = '✅ copied'
 
       setTimeout(() => {
         button.innerText = 'copy'
