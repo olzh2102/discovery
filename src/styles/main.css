@@ -26,6 +26,7 @@ body {
 
 pre {
   padding: 0.5rem;
+  margin: 10px 0;
   border-radius: 0.25rem;
   background-image: var(--pre-bg-image);
   border: 1px solid #2a243b;
@@ -50,7 +51,21 @@ section.post a {
 }
 
 section.post img[alt='scheme'] {
-  background-color: #9caae7;
+  background-color: #A899FF;
   margin: 5px;
   border-radius: 5px;
+}
+
+section.post blockquote {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #A799FF;
+  border-left: solid #2B0AFF;
+  border-radius: 0 5px 5px 0;
+  font-weight: 600;
+}
+
+section.post h2 {
+  font-weight: bold;
+  margin: 15px 0;
 }

@@ -19,11 +19,10 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
 ---
 
 <BaseLayout title={frontmatter.title}>
-  <h1>{frontmatter.title}</h1>
-
   <section class="flex flex-col gap-2">
-    <img src="/assets/https_1.png" class="w-full" alt="A starry night sky." />
-    <div class="h-full flex flex-wrap gap-4">
+    <h1 class="uppercase text-2xl mb-5">{frontmatter.title}</h1>
+    <img src="/images/localhost-https/hero.png" class="w-full" alt="A starry night sky." />
+    <div class="h-full flex flex-wrap gap-4 my-6">
       <div class="flex flex-col">
         <span class="font-bold">Time to read</span>
         <span>~{readingTimeText}</span>
