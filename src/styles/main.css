@@ -34,6 +34,7 @@ pre {
 
 pre > code {
   font-size: 14px;
+  background-color: transparent !important;
 }
 
 @media only screen and (max-width: 767px) {
@@ -43,29 +44,28 @@ pre > code {
 }
 
 section.post ul {
-  list-style: circle;
+  list-style: disc;
+  padding-left: 1.5rem;
 }
 
 section.post a {
   text-decoration: underline;
 }
 
-section.post img[alt='scheme'] {
-  background-color: #A899FF;
-  margin: 5px;
-  border-radius: 5px;
+section.post code {
+  background-color: #e9dcf7;
+  padding: 0.25rem;
+  font-size: 0.97em;
+  border-radius: 2px;
 }
 
-section.post blockquote {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #A799FF;
-  border-left: solid #2B0AFF;
-  border-radius: 0 5px 5px 0;
-  font-weight: 600;
+section.post img[alt='scheme'] {
+  background-color: #e7dbf6;
+  margin: 0.25rem;
+  border-radius: 0.25rem;
 }
 
 section.post h2 {
   font-weight: bold;
-  margin: 15px 0;
+  margin: 1rem 0;
 }
