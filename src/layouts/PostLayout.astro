@@ -8,7 +8,6 @@ import BaseLayout from './BaseLayout.astro'
 
 const { frontmatter } = Astro.props
 const { lang } = Astro.params
-console.log(Astro.props.text)
 
 // TODO: read page from somewhere else
 const page = await getEntry('post', frontmatter.slug)
@@ -64,12 +63,12 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
     }
   </ul>
 
-  <script is:inline>
+  <!-- <script is:inline>
     const codeBlocks = document.querySelectorAll('pre')
 
     codeBlocks.forEach((block) => {
       const wrapper = document.createElement('div')
-      wrapper.className = 'relative group'
+      wrapper.className = 'relative group leading-4'
 
       const copyButton = document.createElement('copy-code-button')
       copyButton.className =
@@ -97,5 +96,5 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
         button.innerText = 'copy'
       }, 1000)
     }
-  </script>
+  </script> -->
 </BaseLayout>

@@ -24,19 +24,6 @@ body {
   }
 }
 
-pre {
-  padding: 0.5rem;
-  margin: 10px 0;
-  border-radius: 0.25rem;
-  background-image: var(--pre-bg-image);
-  border: 1px solid #2a243b;
-}
-
-pre > code {
-  font-size: 14px;
-  background-color: transparent !important;
-}
-
 @media only screen and (max-width: 767px) {
   section.post pre {
     width: calc(100vw - 2rem);
@@ -50,6 +37,17 @@ section.post ul {
 
 section.post a {
   text-decoration: underline;
+}
+
+section.post pre {
+  background-color: inherit !important;
+  padding: 0 1rem 1rem 1rem;
+  background-image: var(--pre-bg-image);
+  border: 1px solid #2a243b;
+}
+
+section.post pre > code {
+  background-color: transparent;
 }
 
 section.post code {
