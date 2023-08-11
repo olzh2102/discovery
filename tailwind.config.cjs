@@ -4,8 +4,11 @@ module.exports = {
 	darkMode: "class",
 	theme: {
 		extend: {
+			colors: {
+				'header': 'var(--bg-header)',
+			},
 			backgroundImage: {
-				'grainy-indigo-900': 'linear-gradient(to right bottom, rgb(10 0 58/81%), rgba(9 0 48/92%)), url("../../images/noise.svg")',
+				'grainy-indigo-900': 'linear-gradient(to bottom, var(--bg-header), var(--bg-header) 4rem, var(--bg-gradient-bottom)), url("../../images/noise.svg")',
 			}
 		},
 	},

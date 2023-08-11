@@ -4,8 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  --bg-header: #f6f4fa;
+  --bg-gradient-bottom: #f2eef9;
+}
+
 html.dark {
   --pre-bg-image: linear-gradient(rgb(0 0 0/50%) 0 0);
+  --bg-header: hsl(256, 27%, 19%);
+  --bg-gradient-bottom: hsl(251, 29%, 11%);
 }
 
 body {
@@ -21,12 +28,6 @@ body {
   }
   h3 {
     @apply text-lg;
-  }
-}
-
-@media only screen and (max-width: 767px) {
-  section.post pre {
-    width: calc(100vw - 2rem);
   }
 }
 
