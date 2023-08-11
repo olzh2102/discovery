@@ -33,7 +33,7 @@ export default function CodeBlock({
         `}
         onClick={async (e) => {
           const text = e.currentTarget.nextElementSibling?.querySelector('code')?.innerText
-          if (text) copyText(text)
+          if (text) await copyText(text)
         }}
       >
         {copied ? <img src={checkIcon} alt="copied" /> : <img src={copyIcon} alt="copy" />}
