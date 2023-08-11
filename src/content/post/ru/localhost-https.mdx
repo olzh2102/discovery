@@ -43,7 +43,7 @@ import Quote from '@components/Quote.astro'
 
 ### Файловая структура
 
-<CodeBlock>
+<CodeBlock client:load>
 ```
 
 ├── docker-compose.yml
@@ -63,7 +63,7 @@ import Quote from '@components/Quote.astro'
 
 Запускаем всю магию с помощью команды `docker compose up`
 
-<CodeBlock path="./docker-compose.yml">
+<CodeBlock path="./docker-compose.yml" client:load>
 ```yaml
 
 version: '3.8'
@@ -98,7 +98,7 @@ services:
 
 В этом блоге используется клиентская часть на NextJS, но вы также можете выбрать любой другой фреймворк по вашему усмотрению.
 
-<CodeBlock path="./frontend/Dockerfile">
+<CodeBlock path="./frontend/Dockerfile" client:load>
 ```dockerfile
   
 FROM node:18-slim
@@ -144,7 +144,7 @@ CMD [ "/run.sh" ]
 
 Давайте сперва разберем код по строчке и далее мы вам скажем зачем мы это делаем в принципе.
 
-<CodeBlock path="./proxy/run.sh">
+<CodeBlock path="./proxy/run.sh" client:load>
 ```bash
 
 if [ ! -f "/etc/nginx/certs/localhost.crt" ]; then
@@ -166,7 +166,7 @@ fi
 - x509 - указание создать самоподписанный сертификат
 - rsa - метод шифрования для создания ключа
 
-<CodeBlock path="./proxy/nginx/default.conf.tpl">
+<CodeBlock path="./proxy/nginx/default.conf.tpl" client:load>
 ```bash
 
 server {
@@ -193,7 +193,7 @@ server {
 
 В файле `proxy_params` установлены заголовки запроса:
 
-<CodeBlock path="./proxy/nginx/proxy_params">
+<CodeBlock path="./proxy/nginx/proxy_params" client:load>
 ```bash
 
 proxy_http_version 1.1;
