@@ -18,9 +18,12 @@ const { lang } = Astro.params
     <meta name="generator" content={Astro.generator} />
     <title>Botqa | {title}</title>
   </head>
-  <body class="bg-[#f6f4fa] dark:bg-grainy-indigo-900 relative flex flex-col p-2 min-h-screen">
+  <body class="
+    relative flex flex-col p-2 pt-0 min-h-screen dark:text-white
+    before:fixed before:-z-50 before:top-0 before:bottom-0 before:right-0 before:left-0 before:bg-grainy-indigo-900
+  ">
     <Navigation />
-    <main class="flex-1 p-2 md:w-1/2 mx-auto flex flex-col gap-3 dark:text-white">
+    <main class="flex-1 p-2 md:w-1/2 mx-auto flex flex-col gap-3">
       <slot />
     </main>
     <footer class="text-black/40 dark:text-white/40 text-center">
