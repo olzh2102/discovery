@@ -2,19 +2,22 @@
 import { getEntry } from 'astro:content'
 import readingTime from 'reading-time'
 
-import { WORDS_PER_MINUTE } from '@common/constants'
+import { LOCALES, WORDS_PER_MINUTE } from '@common/constants'
 import Tag from '@components/tag.astro'
+
+import t from '../../public/lang.json'
 
 import BaseLayout from './BaseLayout.astro'
 
 const { frontmatter } = Astro.props
+const { lang } = Astro.params as { lang: keyof typeof LOCALES }
 
 // TODO: read page from somewhere else
 const page = await getEntry('post', frontmatter.slug)
 
 if (!page) return Astro.redirect('/404/')
 
-const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
+const { minutes } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
 ---
 
 <BaseLayout title={frontmatter.title}>
@@ -23,15 +26,15 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
     <img src={frontmatter.heroImageUrl} class="w-full" alt="hero image related to post" />
     <div class="h-full flex flex-wrap gap-4 my-6">
       <div class="flex flex-col">
-        <span class="font-bold">Time to read</span>
-        <span>~{readingTimeText}</span>
+        <span class="font-bold">{t[lang]['post']['timeToRead']}</span>
+        <span>~{Math.ceil(minutes)} {t[lang]['post']['minsRead']}</span>
       </div>
 
       <div class="flex flex-col">
-        <span class="font-bold">Published</span>
+        <span class="font-bold">{t[lang]['post']['published']}</span>
         <time datetime={frontmatter.date}>
           {
-            new Date(frontmatter.date).toLocaleString(undefined, {
+            new Date(frontmatter.date).toLocaleString(LOCALES[lang], {
               year: 'numeric',
               month: 'long',
               day: '2-digit',
@@ -41,7 +44,7 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
       </div>
 
       <div class="flex flex-col">
-        <span class="font-bold">Authors</span>
+        <span class="font-bold">{t[lang]['post']['authors']}</span>
         <span>{frontmatter.author}</span>
       </div>
     </div>
