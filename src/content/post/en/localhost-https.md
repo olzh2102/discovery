@@ -8,6 +8,7 @@ draft: false
 category: JavaScript
 slug: https-wild-west
 tags: ['javascript', 'nginx', 'docker']
+heroImageUrl: /images/localhost-https/hero.png
 ---
 
 During the development of a web application, the client-side often relies on the server; the client sends requests and processes responses. In some cases, when using third-party APIs like Facebook, Gmail, Twitter, etc., a secure SSL connection is required, which can be inconvenient while testing and running the frontend application on a local machine.

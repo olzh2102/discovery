@@ -9,6 +9,7 @@ const post = defineCollection({
     draft: z.boolean().default(false),
     category: z.enum(['CSS, TailwindCSS', 'JavaScript', 'NextJS', 'ReactJS', 'Test']),
     tags: z.array(z.string()),
+    heroImageUrl: z.string(),
   }),
 })
 

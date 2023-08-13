@@ -1,16 +1,6 @@
 ---
-import { getCollection } from 'astro:content'
-import { LOCALES } from '@common/constants'
-import BaseLayout from '@layouts/BaseLayout.astro'
-
-import dockerIcon from '../../public/images/docker.svg'
-import jsIcon from '../../public/images/js.svg'
-import nginxIcon from '../../public/images/nginx.svg'
-
 const { tag } = Astro.props
 const { lang } = Astro.params
-
-
 ---
 
 <a href={`/${lang}/tags/${tag}`} class="p-1 text-sm border-2 dark:border shadow border-black dark:border-violet-300 rounded font-semibold flex items-center gap-1.5">

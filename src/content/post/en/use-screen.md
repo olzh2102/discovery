@@ -8,6 +8,7 @@ draft: false
 category: NextJS
 slug: use-screen-west
 tags: ['javascript', 'react', 'hooks', 'webapi']
+heroImageUrl: /images/localhost-https/hero.png
 ---
 
 Here will be some text about Horizontal Wrapper

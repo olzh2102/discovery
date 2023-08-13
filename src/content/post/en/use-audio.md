@@ -8,6 +8,7 @@ draft: false
 category: JavaScript
 slug: use-audio-west
 tags: ['javascript', 'react', 'hooks', 'webapi']
+heroImageUrl: /images/localhost-https/hero.png
 ---
 
 Here will be some text about Horizontal Wrapper

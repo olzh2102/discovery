@@ -8,6 +8,7 @@ draft: false
 category: ReactJS
 slug: horizontal-scroll-west
 tags: ['javascript', 'css']
+heroImageUrl: /images/localhost-https/hero.png
 ---
 
 Here will be some text about Horizontal Wrapper
