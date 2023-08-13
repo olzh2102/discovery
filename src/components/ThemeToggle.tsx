@@ -1,20 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+
+import moonIcon from '../../public/images/moon.svg'
+import sunIcon from '../../public/images/sun.svg'
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") ?? "light"
-  );
+  const [theme, setTheme] = useState('')
 
   useEffect(() => {
-    if (theme == "dark") document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
+    setTheme(localStorage.getItem('theme') ?? 'light')
+  }, [])
 
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  useEffect(() => {
+    if (theme == 'dark') document.documentElement.classList.add('dark')
+    else document.documentElement.classList.remove('dark')
+
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
   return (
-    <button onClick={() => setTheme(theme == "light" ? "dark" : "light")}>
-      change theme
+    <button onClick={() => setTheme(theme == 'light' ? 'dark' : 'light')}>
+      {theme === 'light' ? <img src={moonIcon} alt="moon" /> : <img src={sunIcon} alt="sun" />}
     </button>
-  );
+  )
 }
