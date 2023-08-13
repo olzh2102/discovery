@@ -12,11 +12,11 @@ const currentPath = Astro.url.pathname.slice(1).replace(String(lang) + '/', '')
     <a class={currentPath == 'timeline' ? 'line-through' : ''} href="timeline">Timeline</a>
     <a class={currentPath == 'photography' ? 'line-through' : ''} href="photography">Photography</a>
   </nav>
-  <div>
+  <div class="flex gap-2">
     <!-- <a href="#">Instagram</a>
     <a href="#">Tiktok</a>
-    <a href="#">LinkedIn</a>
-    <ThemeToggle client:load /> -->
+    <a href="#">LinkedIn</a> -->
+    <ThemeToggle client:load />
     <LanguagePicker />
   </div>
 </header>

@@ -7,16 +7,21 @@
 html {
   --bg-header: #f6f4fa;
   --bg-gradient-bottom: #f2eef9;
+  --bg-inline-code: #e9dcf7;
+  --accent-color: #aa186f;
 }
 
 html.dark {
   --pre-bg-image: linear-gradient(rgb(0 0 0/50%) 0 0);
   --bg-header: hsl(256, 27%, 19%);
   --bg-gradient-bottom: hsl(251, 29%, 11%);
+  --bg-inline-code: #ffffff16;
+  --accent-color: #ff7e33;
 }
 
 body {
   overscroll-behavior-y: none;
+  line-height: 1.75em;
 }
 
 @layer base {
@@ -38,13 +43,13 @@ section.post ul {
 
 section.post a {
   text-decoration: underline;
+  color: var(--accent-color);
 }
 
 section.post pre {
   background-color: inherit !important;
   padding: 0 1rem 1rem 1rem;
   background-image: var(--pre-bg-image);
-  border: 1px solid #2a243b;
 }
 
 section.post pre > code {
@@ -52,7 +57,7 @@ section.post pre > code {
 }
 
 section.post code {
-  background-color: #e9dcf7;
+  background-color: var(--bg-inline-code);
   padding: 0.25rem;
   font-size: 0.97em;
   border-radius: 2px;
@@ -66,5 +71,5 @@ section.post img[alt='scheme'] {
 
 section.post h2 {
   font-weight: bold;
-  margin: 1rem 0;
+  margin: 1.5rem 0 0.75rem;
 }

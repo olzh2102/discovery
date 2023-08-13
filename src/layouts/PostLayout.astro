@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content'
 import readingTime from 'reading-time'
 
 import { WORDS_PER_MINUTE } from '@common/constants'
+import Tag from '@components/tag.astro'
 
 import BaseLayout from './BaseLayout.astro'
 
@@ -51,50 +52,13 @@ const { text: readingTimeText } = readingTime(page.body, { wordsPerMinute: WORDS
     <slot />
   </section>
 
-  <ul class="flex gap-1.5">
+  <ul class="flex gap-1.5 mt-4">
     {
       frontmatter.tags.map((tag: string) => (
         <li class="lowercase text-sm">
-          <a href={`/${lang}/tags/${tag}`} class="p-1.5 bg-rose-900 rounded-sm">
-            {tag}
-          </a>
+          <Tag tag={tag} />
         </li>
       ))
     }
   </ul>
-
-  <!-- <script is:inline>
-    const codeBlocks = document.querySelectorAll('pre')
-
-    codeBlocks.forEach((block) => {
-      const wrapper = document.createElement('div')
-      wrapper.className = 'relative group leading-4'
-
-      const copyButton = document.createElement('copy-code-button')
-      copyButton.className =
-        'absolute top-2 right-2 text-transparent group-hover:text-white duration-300 transition ease-in-out'
-      block.setAttribute('tabindex', '0')
-      block.appendChild(copyButton)
-
-      block.parentNode.insertBefore(wrapper, block)
-      wrapper.appendChild(block, copyButton)
-
-      copyButton.addEventListener('click', async () => {
-        await copyCode(block, copyButton)
-      })
-    })
-
-    async function copyCode(block, button) {
-      let code = block.querySelector('code')
-      let text = code.innerText
-
-      await navigator.clipboard.writeText(text)
-
-      button.appendChild = '✅ copied'
-
-      setTimeout(() => {
-        button.innerText = 'copy'
-      }, 1000)
-    }
-  </script> -->
 </BaseLayout>
