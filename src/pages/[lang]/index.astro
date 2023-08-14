@@ -4,6 +4,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import { LOCALES } from '@common/constants';
 
 const { lang } = Astro.params as {lang: keyof typeof LOCALES}
+console.log("🚀 ~ file: index.astro:7 ~ lang:", lang)
 
 if (!(lang in LOCALES)) return Astro.redirect('/en/');
 const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`));
@@ -11,17 +12,34 @@ const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`))
 
 <BaseLayout title="two friends'">
 	<div class="flex flex-col gap-2">
-		<h1 class="text-2xl">Our work and findings</h1>
-		<p>
-			We are two friends who like to work together on different things. 
-			We both have engineering background and a huge passion for technology and education.
-		</p>
+		{lang === 'en' &&
+			<div>
+				<h1 class="text-2xl">Our work and findings</h1>
+				<p>
+					We are two friends who like to work together on different things. 
+					We both have engineering background and a huge passion for technology and education.
+				</p>
+			</div>
+		}
+
+		{lang === 'ru' &&
+			<div>
+				<h1 class="text-2xl">Наши работы и находки</h1>
+				<p>
+					Мы два друга, которым нравится работать вместе над разными проектами. 
+					У нас обоих инженерное образование и мы любопытный.
+				</p>
+			</div>
+		}
+
 		<ul class="divide-y divide-zinc-400 mt-6">
 			{posts.map((post) => (
 				<li>
 					<a class="py-1 flex justify-between" href={`/${lang}/posts/${post.slug}`}>
 						<span class="w-3/4">{post.data.title}</span>
-						<span class="text-sm uppercase text-black/40 dark:text-white/40">guide ~ {post.data.date.toLocaleDateString(LOCALES[lang])}</span>
+						<span class="text-sm uppercase text-black/40 dark:text-white/40">
+							guide ~ {post.data.date.toLocaleDateString(LOCALES[lang])}
+						</span>
 					</a>
 				</li>
 			))}

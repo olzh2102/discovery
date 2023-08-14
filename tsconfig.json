@@ -8,7 +8,7 @@
       "@common/*": ["src/common/*"],
       "@components/*": ["src/components/*"],
       "@content/*": ["src/content/*"],
-      "@layouts/*": ["src/layouts/*"]
+      "@layouts/*": ["src/layouts/*"],
     }
   }
 }

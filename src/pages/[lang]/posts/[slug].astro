@@ -1,12 +1,12 @@
 ---
-import { getEntry } from 'astro:content';
+import { getEntry } from 'astro:content'
 
-const { slug } = Astro.params as { slug: string };
-const page = await getEntry('post', slug);
+const { slug } = Astro.params as { slug: string }
+const page = await getEntry('post', slug)
 
-if (!page) return Astro.redirect('/404/');
+if (!page) return Astro.redirect('/404/')
 
-const { Content } = await page.render();
+const { Content } = await page.render()
 ---
 
 <Content />

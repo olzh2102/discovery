@@ -1,0 +1,18 @@
+{
+  "en": {
+    "post": {
+      "authors": "Authors",
+      "minsRead": "mins read",
+      "published": "Published",
+      "timeToRead": "Time to read"
+    }
+  },
+  "ru": {
+    "post": {
+      "authors": "Авторы",
+      "minsRead": "мин.",
+      "published": "Опубликовано",
+      "timeToRead": "Время чтения"
+    }
+  }
+}

@@ -1,22 +1,22 @@
 ---
-import ThemeToggle from "@components/ThemeToggle";
-import LanguagePicker from "@components/LanguagePicker.astro";
+import ThemeToggle from '@components/ThemeToggle'
+import LanguagePicker from '@components/LanguagePicker.astro'
 
 const { lang } = Astro.params
 const currentPath = Astro.url.pathname.slice(1).replace(String(lang) + '/', '')
 ---
 
-<header class="sticky top-2 flex justify-between dark:text-white">
-    <nav>
-        <a class={currentPath == '' ? 'line-through' : ''} href={`/${lang}/`}>Home</a>
-        <a class={currentPath == 'timeline' ? 'line-through' : ''} href="timeline">Timeline</a>
-        <a class={currentPath == 'photography' ? 'line-through' : ''} href="photography">Photography</a>
-    </nav>
-    <div>
-        <a href="#">Instagram</a>
-        <a href="#">Tiktok</a>
-        <a href="#">LinkedIn</a>
-        <ThemeToggle client:load />
-        <LanguagePicker />
-    </div>
+<header class="sticky top-0 py-2 z-50 flex justify-between items-center bg-header">
+  <nav>
+    <a class={currentPath == '' ? 'line-through' : ''} href={`/${lang}/`}>Home</a>
+    <a class={currentPath == 'timeline' ? 'line-through' : ''} href="timeline">Timeline</a>
+    <a class={currentPath == 'photography' ? 'line-through' : ''} href="photography">Photography</a>
+  </nav>
+  <div class="flex gap-2 items-center">
+    <!-- <a href="#">Instagram</a>
+    <a href="#">Tiktok</a>
+    <a href="#">LinkedIn</a> -->
+    <ThemeToggle client:load />
+    <LanguagePicker />
+  </div>
 </header>
