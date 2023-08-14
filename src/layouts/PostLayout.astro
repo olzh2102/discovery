@@ -20,7 +20,7 @@ if (!page) return Astro.redirect('/404/')
 const { minutes } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
 ---
 
-<BaseLayout title={frontmatter.title}>
+<BaseLayout title={frontmatter.title} description={frontmatter.description}>
   <section class="flex flex-col gap-2">
     <h1 class="uppercase text-2xl mb-5">{frontmatter.title}</h1>
     <img src={frontmatter.heroImageUrl} class="w-full" alt="hero image related to post" />

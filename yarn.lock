@@ -15,15 +15,25 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@astrojs/compiler@^1.0.1", "@astrojs/compiler@^1.4.2", "@astrojs/compiler@^1.6.0":
+"@astrojs/compiler@^1.0.1", "@astrojs/compiler@^1.4.2":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.6.1.tgz#c6c3cb6b87efbd62038012dce5b226f7ebc7d7fe"
   integrity sha512-QZZhV2kOhvyXEfpaGLgHWNPUOlkMVx3Zw+5IlXXU2p448NwtyYt3C6MuS7baVsTlluH3EedAoDBmelt9hPhfiQ==
+
+"@astrojs/compiler@^1.8.0":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.8.1.tgz#43575b1a35b16cb8ffe56792870b00e5306c673f"
+  integrity sha512-C28qplQzgIJ+JU9S+1wNx+ue2KCBUp0TTAd10EWAEkk4RsL3Tzlw0BYvLDDb4KP9jS48lXmR4/1TtZ4aavYJ8Q==
 
 "@astrojs/internal-helpers@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@astrojs/internal-helpers/-/internal-helpers-0.1.1.tgz#97fbe1d845753ab492ee2c967d44c8add34f1f9c"
   integrity sha512-+LySbvFbjv2nO2m/e78suleQOGEru4Cnx73VsZbrQgB2u7A4ddsQg3P2T0zC0e10jgcT+c6nNlKeLpa6nRhQIg==
+
+"@astrojs/internal-helpers@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/internal-helpers/-/internal-helpers-0.1.2.tgz#2b113950d380942ebb50278a54415c20d2751f0b"
+  integrity sha512-YXLk1CUDdC9P5bjFZcGjz+cE/ZDceXObDTXn/GCID4r8LjThuexxi+dlJqukmUpkSItzQqgzfWnrPLxSFPejdA==
 
 "@astrojs/language-server@^1.0.0":
   version "1.0.8"
@@ -732,7 +742,7 @@
   resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.14.tgz#add4c98d341472a289190b424efbdb096991bb24"
   integrity sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==
 
-"@jridgewell/sourcemap-codec@^1.4.10", "@jridgewell/sourcemap-codec@^1.4.13":
+"@jridgewell/sourcemap-codec@^1.4.10", "@jridgewell/sourcemap-codec@^1.4.15":
   version "1.4.15"
   resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz#d7c6e6755c78567a951e04ab52ef0fd26de59f32"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
@@ -1132,13 +1142,18 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.6.tgz#2c9c157cf1739d67561c56ba896e6948f6b93731"
   integrity sha512-ISvCdHdlTDlH5IpxQJIex7BWBywFWgjJSVdwst+/iQCoEYnyOaQ95+X1JGshuBjGp6nxKUy1jMgE3zPqN7fQdg==
 
-astro@^2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.9.2.tgz#12cbd248820b737b0c51fa61230d9a4c31b58864"
-  integrity sha512-ejdGM9SbK58AvJS8lbkre/d5CoW8JftqaRxc9rGqzpiZQ8iU8gfdFmi3Hzkcvd2HrGvYYsJku88pM6tkBPniJQ==
+astro-seo@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/astro-seo/-/astro-seo-0.7.5.tgz#0ce29afe4b979da343315de4e4381a2ee44ce242"
+  integrity sha512-bo5PiB4Y30PP9QS6OnYcVOr1fKDE52mvJys/3HgeiM2h+/hS7jESUHZMx6VX7yRid1yMGHsp2OyVTA9DrdPyPg==
+
+astro@2.10.7:
+  version "2.10.7"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.10.7.tgz#069368f03e7a00c0bdf75c82aba1fc417f74d768"
+  integrity sha512-R8aF4yphrsbhxW2UxHZ1DslBn8e8vPQ23+Z/OnajNE1Q4HEZCOZ4CAbHJx2PDwq2p+CRWArNalpr3+rTqyOYBQ==
   dependencies:
-    "@astrojs/compiler" "^1.6.0"
-    "@astrojs/internal-helpers" "^0.1.1"
+    "@astrojs/compiler" "^1.8.0"
+    "@astrojs/internal-helpers" "^0.1.2"
     "@astrojs/language-server" "^1.0.0"
     "@astrojs/markdown-remark" "^2.2.1"
     "@astrojs/telemetry" "^2.1.1"
@@ -1172,7 +1187,7 @@ astro@^2.9.2:
     html-escaper "^3.0.3"
     js-yaml "^4.1.0"
     kleur "^4.1.4"
-    magic-string "^0.27.0"
+    magic-string "^0.30.2"
     mime "^3.0.0"
     network-information-types "^0.1.1"
     ora "^6.3.1"
@@ -2479,12 +2494,12 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-magic-string@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.27.0.tgz#e4a3413b4bab6d98d2becffd48b4a257effdbbf3"
-  integrity sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==
+magic-string@^0.30.2:
+  version "0.30.2"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.2.tgz#dcf04aad3d0d1314bc743d076c50feb29b3c7aca"
+  integrity sha512-lNZdu7pewtq/ZvWUp9Wpf/x7WzMTsR26TWV03BRZrXFsv+BI6dy8RAiKgm1uM/kyR0rCfUcqvOlXKG66KhIGug==
   dependencies:
-    "@jridgewell/sourcemap-codec" "^1.4.13"
+    "@jridgewell/sourcemap-codec" "^1.4.15"
 
 make-dir@^3.1.0:
   version "3.1.0"
