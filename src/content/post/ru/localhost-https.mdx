@@ -3,24 +3,25 @@ layout: ../../../layouts/PostLayout.astro
 title: Локальный сервер на https
 date: 2023-07-30
 author: Динмухамед Сайлаубек, Олжас Куриков
-description: Dundir Mufflin, this is Pam
+description: Как защитить свой локальный сервер
 draft: false
 category: JavaScript
 slug: localhost-https-soviet
-tags: ['javascript', 'nginx', 'docker']
+tags: ["javascript", "nginx", "docker"]
 heroImageUrl: /images/localhost-https/hero.png
 ---
 
-import CodeBlock from '@components/CodeBlock'
-import Quote from '@components/Quote.astro'
+import CodeBlock from "@components/CodeBlock";
+import Quote from "@components/Quote.astro";
 
 В ходе разработки того или иного веб-приложения, клиентская часть во многих случаях зависит от сервера; клиент отправляет запросы и обрабатывает ответы.
 В некоторых случаях при использовании
 сторонних `API` (Facebook, Gmail, Twitter и т.д.) требуется защищенное `SSL` соединение и это конечно приносит неудобства в виде тестирования, запуска фронтэнд приложения на локальной машине. Исходя из этого мы бы хотели вам показать как получить самоподписанный `SSL-сертификат` для вашего локального сервера.
 
 <Quote variant="warning">
-  Для продакшн использование самоподписанных сертификатов не рекомендуется. Подобные сертификаты не
-  обеспечивают надежной защиты и не признаются учреждениями сертификации.
+  Для продакшн использование самоподписанных сертификатов не рекомендуется.
+  Подобные сертификаты не обеспечивают надежной защиты и не признаются
+  учреждениями сертификации.
 </Quote>
 
 Самоподписанные SSL сертификаты вам пригодятся в следующих случаях:
@@ -49,15 +50,16 @@ import Quote from '@components/Quote.astro'
 
 ├── docker-compose.yml
 ├── frontend (react / nextjs / vue / svelte) - 1st service
-│   ├── Dockerfile
-│   └── ...
+│ ├── Dockerfile
+│ └── ...
 └── proxy - 2nd service
-    ├── Dockerfile
-    ├── nginx
-    │   ├── default.conf.tpl
-    │   └── proxy_params
-    └── run.sh
-```
+├── Dockerfile
+├── nginx
+│   ├── default.conf.tpl
+│   └── proxy_params
+└── run.sh
+
+````
 </CodeBlock>
 
 ## docker compose
@@ -92,7 +94,8 @@ services:
 
   volumes:
     ssl-certs:
-```
+````
+
 </CodeBlock>
 
 ## Клиентская часть (Frontend Service)
@@ -115,7 +118,8 @@ COPY . ./app
 EXPOSE 3000
 
 CMD ["yarn", "dev"]
-```
+
+````
 </CodeBlock>
 
 ## Прокси (Proxy Service)
@@ -136,7 +140,8 @@ RUN apk add --no-cache openssl bash
 RUN chmod +x /run.sh
 
 CMD [ "/run.sh" ]
-```
+````
+
 </CodeBlock>
 
 При запуске нашего прокси-сервиса первым делом выполняется shell-скрипт из файла `run.sh`. В этом скрипте создается `приватный ключ + самоподписанный сертификат` для локального сервиса.
@@ -147,16 +152,17 @@ CMD [ "/run.sh" ]
 ```bash
 
 if [ ! -f "/etc/nginx/certs/localhost.crt" ]; then
-  echo "No SSL cert - creating it"
+echo "No SSL cert - creating it"
 
-  openssl req -x509 -out /etc/nginx/certs/localhost.crt \
-    -keyout /etc/nginx/certs/localhost.key \
-    -newkey rsa:2048 -nodes -sha256 \
-    -subj '/CN=localhost' \
-    -extensions EXT \
-    -config <(printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+openssl req -x509 -out /etc/nginx/certs/localhost.crt \
+ -keyout /etc/nginx/certs/localhost.key \
+ -newkey rsa:2048 -nodes -sha256 \
+ -subj '/CN=localhost' \
+ -extensions EXT \
+ -config <(printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 fi
-```
+
+````
 </CodeBlock>
 
 Проверка на наличие SSL-сертификата и ключа для локального сервера.
@@ -183,7 +189,8 @@ server {
     include /etc/nginx/proxy_params;
   }
 }
-```
+````
+
 </CodeBlock>
 
 При использовании веб-сервера `nginx`, `server` блоки можно использовать для инкапсуляции конфигурационных деталей и размещения более одного домена на одном сервере.
@@ -198,7 +205,9 @@ server {
 proxy_http_version 1.1;
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection "upgrade";
+
 ```
 </CodeBlock>
 
 <p class="flex gap-1.5 items-center">Ссылка на репозиторий: [![repo](../../../../images/github.svg)](https://github.com/evitla/nextjs-https)</p>
+

@@ -4,7 +4,6 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import { LOCALES } from '@common/constants';
 
 const { lang } = Astro.params as {lang: keyof typeof LOCALES}
-console.log("🚀 ~ file: index.astro:7 ~ lang:", lang)
 
 if (!(lang in LOCALES)) return Astro.redirect('/en/');
 const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`));
@@ -17,7 +16,7 @@ const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`))
 				<h1 class="text-2xl">Our work and findings</h1>
 				<p>
 					We are two friends who like to work together on different things. 
-					We both have engineering background and a huge passion for technology and education.
+					We both have engineering background and a huge passion for technology and education. 
 				</p>
 			</div>
 		}

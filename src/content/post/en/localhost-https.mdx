@@ -1,0 +1,228 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: HTTPS for your localhost
+date: 2023-07-30
+author: Dinmukhamed Sailaubek, Olzhas Kurikov
+description: How to SSL secure your localhost server
+draft: false
+category: JavaScript
+slug: https-wild-west
+tags: ["javascript", "nginx", "docker"]
+heroImageUrl: /images/localhost-https/hero.png
+---
+
+import CodeBlock from "@components/CodeBlock";
+import Quote from "@components/Quote.astro";
+
+During the development of a web application, the client-side often relies on the server;
+the client sends requests and processes responses.
+In some cases, when using third-party `APIs` like Facebook, Gmail, Twitter,
+etc., a secure `SSL` connection is required,
+which can be inconvenient while testing and running the frontend application on a local machine.
+
+<Quote variant="warning">
+  Using self-signed certificates for production is not recommended. Such
+  certificates do not provide reliable security and are not recognized by
+  certification authorities.
+</Quote>
+
+Self-signed `SSL certificates` can be useful in the following scenarios:
+
+- local development and testing
+- prototyping and demonstrating concepts
+- educational and learning purposes
+
+## TL;DR
+
+We will have two services, or more precisely,
+two `Docker images`: the first being any application for the client-side,
+and the second being a proxy server to obtain an SSL certificate, private key,
+and redirect traffic to a secure channel.
+You can see a brief overview of the entire process in the diagram below.
+
+Prerequisites:
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [NodeJS](https://nodejs.org/en)
+
+Before diving into the description of the actual process,
+I'd like to show the components it consists of.
+
+### File structure
+
+<CodeBlock client:load>
+```
+
+├── docker-compose.yml
+├── frontend (react / nextjs / vue / svelte) - 1st service
+│ ├── Dockerfile
+│ └── ...
+└── proxy - 2nd service
+├── Dockerfile
+├── nginx
+│   ├── default.conf.tpl
+│   └── proxy_params
+└── run.sh
+
+````
+</CodeBlock>
+
+## docker compose
+
+Initiate the entire process by using the command `docker-compose up`.
+
+<CodeBlock path="./docker-compose.yml" client:load>
+```yaml
+
+version: '3.8'
+services:
+
+  # 1st service
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+
+  # 2nd service
+  proxy:
+    container_name: proxy
+    build: ./proxy
+    volumes:
+      - ssl-certs:/etc/nginx/certs
+    ports:
+      - 443:443
+    depends_on:
+      - frontend
+
+  volumes:
+    ssl-certs:
+````
+
+</CodeBlock>
+
+## Client-Side (Frontend Service)
+
+This blog post uses the client-side built with `NextJS`,
+but you can also choose any other framework according to your preference.
+
+<CodeBlock path="./frontend/Dockerfile" client:load>
+```dockerfile
+  
+FROM node:18-slim
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./app/
+
+RUN yarn install --frozen-lockfile
+
+COPY . ./app
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]
+
+````
+</CodeBlock>
+
+## Proxy Service
+
+The majority of the process takes place within the `proxy` image.
+
+<CodeBlock path="./proxy/Dockerfile" client:load>
+```dockerfile
+
+FROM nginx:1.23.0-alpine
+
+COPY ./nginx/* /etc/nginx/
+
+COPY ./run.sh /run.sh
+
+RUN apk add --no-cache openssl bash
+
+RUN chmod +x /run.sh
+
+CMD [ "/run.sh" ]
+````
+
+</CodeBlock>
+
+Upon launching our proxy service,
+the first thing that happens is the execution of the shell script from the `run.sh` file.
+This script generates a private key + self-signed certificate for the local service.
+
+The script in the `run.sh` file generates a self-signed certificate for the `localhost`
+domain using the `OpenSSL` command.
+Upon creation, the certificate is stored in the file `/etc/nginx/certs/localhost.crt`,
+while the private key is stored in `/etc/nginx/certs/localhost.key`.
+
+<CodeBlock path="./proxy/run.sh" client:load>
+```bash
+
+if [ ! -f "/etc/nginx/certs/localhost.crt" ]; then
+echo "No SSL cert - creating it"
+
+openssl req -x509 -out /etc/nginx/certs/localhost.crt \
+ -keyout /etc/nginx/certs/localhost.key \
+ -newkey rsa:2048 -nodes -sha256 \
+ -subj '/CN=localhost' \
+ -extensions EXT \
+ -config <(printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+fi
+
+````
+</CodeBlock>
+
+
+Checking for the presence of an SSL certificate and key for the local server.
+
+- `openssl req` -- request to create and sign a certificate
+- `x509` -- indicates creating a self-signed certificate
+- `rsa` -- encryption method to generate the key
+
+<CodeBlock path="./proxy/nginx/default.conf.tpl" client:load>
+```bash
+
+server {
+  listen 443 ssl;
+  server_name localhost;
+
+  ssl_certificate /etc/nginx/certs/localhost.crt;
+  ssl_certificate_key /etc/nginx/certs/localhost.key;
+
+  add_header Strict-Transport-Security "max-age=31536000" always;
+
+  location / {
+    proxy_pass http://frontend:3000;
+
+    include /etc/nginx/proxy_params;
+  }
+}
+````
+
+</CodeBlock>
+
+When using the `nginx` web server, `server` blocks can be used to encapsulate configuration
+details and host more than one domain on a single server.
+
+In our case, within the `server` block, `nginx` listens on the secure port `443` for all
+requests using the `listen` directive and forwards requests to `http://frontend:3000` (via the `proxy_pass` directive).
+
+The `proxy_params` file sets request headers:
+
+<CodeBlock path="./proxy/nginx/proxy_params" client:load>
+```bash
+
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection "upgrade";
+
+```
+</CodeBlock>
+
+<p class="flex gap-1.5 items-center">Ссылка на репозиторий: [![repo](../../../../images/github.svg)](https://github.com/evitla/nextjs-https)</p>
+
+```
