@@ -23,7 +23,7 @@ const { lang } = Astro.params
         basic: {
           title,
           type: "article",
-          image:"/images/localhost-https/hero.png"
+          image:"../../public/images/localhost-https/hero.png"
         }
       }}
     />
@@ -42,6 +42,20 @@ const { lang } = Astro.params
     <script src="../scripts/vercel/analytics.ts"></script>
   </body>
 </html>
+
+<script is:inline>
+  const theme = (() => {
+    if (typeof localStorage != 'undefined' && localStorage.getItem('theme'))
+      return localStorage.getItem('theme')
+
+    return 'light'
+  })()
+
+  if (theme == 'light') document.documentElement.classList.remove('dark')
+  else document.documentElement.classList.add('dark')
+
+  window.localStorage.setItem('theme', theme)
+</script>
 
 <style is:global>
   :root {
