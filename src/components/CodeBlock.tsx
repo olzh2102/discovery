@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import checkIcon from '../../public/images/check.svg'
-import copyIcon from '../../public/images/copy.svg'
+import checkIcon from '/images/check.svg'
+import copyIcon from '/images/copy.svg'
 
 export default function CodeBlock({
   children,

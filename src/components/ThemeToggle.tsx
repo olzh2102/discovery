@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import moonIcon from '../../public/images/moon.svg'
-import sunIcon from '../../public/images/sun.svg'
+import moonIcon from '/images/moon.svg'
+import sunIcon from '/images/sun.svg'
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState('')

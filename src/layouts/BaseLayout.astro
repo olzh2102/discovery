@@ -23,7 +23,7 @@ const { lang } = Astro.params
         basic: {
           title,
           type: "article",
-          image:"../../public/images/localhost-https/hero.png"
+          image:"/images/localhost-https/hero.png"
         }
       }}
     />
@@ -39,22 +39,9 @@ const { lang } = Astro.params
     <footer class="text-black/40 dark:text-white/40 text-center">
       © 2014-2023 Olzhas Kurikov and Dinmuhamed Sailaubek. All Right Reserved.
     </footer>
+    <script src="../scripts/vercel/analytics.ts"></script>
   </body>
 </html>
-
-<script is:inline>
-  const theme = (() => {
-    if (typeof localStorage != 'undefined' && localStorage.getItem('theme'))
-      return localStorage.getItem('theme')
-
-    return 'light'
-  })()
-
-  if (theme == 'light') document.documentElement.classList.remove('dark')
-  else document.documentElement.classList.add('dark')
-
-  window.localStorage.setItem('theme', theme)
-</script>
 
 <style is:global>
   :root {
