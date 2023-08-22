@@ -1,11 +1,11 @@
 ---
 import Navigation from '@components/Navigation.astro'
-import { SEO } from 'astro-seo'
+import { SEO, Props as SEOProps } from 'astro-seo'
 import '../styles/main.css'
 
-export type Props = { title: string, description: string }
+type Props = { title: string, description: string, seoOptions?: Omit<SEOProps, 'title' | 'description'> }
 
-const { title, description } = Astro.props
+const { title, description, seoOptions = {} } = Astro.props
 const { lang } = Astro.params
 ---
 
@@ -17,15 +17,9 @@ const { lang } = Astro.params
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <SEO 
-      title={`Botqa | ${title} | Blog posts about programming, lifestyle and bullsh...`}
+      title={`Botqa | ${title}`}
       description={description}
-      openGraph={{
-        basic: {
-          title,
-          type: "article",
-          image:"../../public/images/localhost-https/hero.png"
-        }
-      }}
+      {...seoOptions}
     />
   </head>
   <body class="

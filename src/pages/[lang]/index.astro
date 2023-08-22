@@ -9,7 +9,7 @@ if (!(lang in LOCALES)) return Astro.redirect('/en/');
 const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`));
 ---
 
-<BaseLayout title="two friends'">
+<BaseLayout title="two friends'" description='Blog posts about programming, lifestyle and bullsh...'>
 	<div class="flex flex-col gap-2">
 		{lang === 'en' &&
 			<div>
