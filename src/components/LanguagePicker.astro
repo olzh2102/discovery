@@ -6,7 +6,7 @@ const locales = Object.keys(LOCALES)
 const { lang } = Astro.params;
 ---
 
-{lang && <ul class="flex gap-1">
+{lang && <ul class="flex gap-1 list-none">
   {locales.map((locale) => (
     <li>
       <a href={`/${locale}/`} class={(locale === lang ? 'line-through' : '') + ' uppercase'}>

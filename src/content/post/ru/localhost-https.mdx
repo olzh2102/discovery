@@ -12,6 +12,7 @@ heroImageUrl: /posts/localhost-https/hero.png
 ---
 
 import CodeBlock from "@components/CodeBlock";
+import FileTree from "@components/FileTree.astro";
 import Quote from "@components/Quote.astro";
 
 В ходе разработки того или иного веб-приложения, клиентская часть во многих случаях зависит от сервера; клиент отправляет запросы и обрабатывает ответы.
@@ -45,22 +46,52 @@ import Quote from "@components/Quote.astro";
 
 ### Файловая структура
 
-<CodeBlock client:load>
-```
-
-├── docker-compose.yml
-├── frontend (react / nextjs / vue / svelte) - 1st service
-│ ├── Dockerfile
-│ └── ...
-└── proxy - 2nd service
-├── Dockerfile
-├── nginx
-│   ├── default.conf.tpl
-│   └── proxy_params
-└── run.sh
-
-````
-</CodeBlock>
+<FileTree id="project-structure" file={{
+    name: 'root',
+    children: [
+      {
+        name: 'frontend (react / nextjs / vue / svelte) - 1st service',
+        children: [
+          {
+            name: 'Dockerfile',
+            ext: 'docker',
+          },
+          {
+            name: '',
+            ext: 'dots'
+          },
+        ],
+      },
+      {
+        name: 'proxy - 2nd service',
+        children: [
+          {
+            name: 'nginx',
+            children: [
+              {
+                name: 'default.conf.tpl',
+              },
+              {
+                name: 'proxy_params',
+              },
+            ]
+          },
+          {
+            name: 'Dockerfile',
+            ext: 'docker',
+          },
+          {
+            name: 'run.sh',
+            ext: 'sh',
+          },
+        ]
+      },
+      {
+        name: 'docker-compose.yml',
+        ext: 'yml',
+      }
+    ],
+  }} />
 
 ## docker compose
 
