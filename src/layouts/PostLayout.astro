@@ -54,7 +54,7 @@ const { minutes } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
     <slot />
   </section>
 
-  <ul class="flex gap-1.5 mt-4">
+  <ul class="flex gap-1.5 mt-4 list-none">
     {
       frontmatter.tags.map((tag: string) => (
         <li class="lowercase text-sm">

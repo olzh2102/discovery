@@ -1,0 +1,53 @@
+---
+type File = {
+  name: string
+  ext?: string
+  children?: File[]
+}
+
+const { id, file } = Astro.props as { id?: string, file: File }
+
+const rootStyle = file.name == 'root' ? 'rounded border border-[#43316a] py-2' : 'border-l border-[#43316a] ml-2'
+---
+
+<ul id={id} data-name={file.name} class={`bg-[#e4d5f3] dark:bg-[#14101c] list-none ${rootStyle}`}>
+  {
+    file.children?.map((child) => (
+      <li>
+        {
+          child.children
+            ? <button class="hover:text-[var(--accent-color)] flex items-center gap-1.5">
+                <img src="/icons/folder-opened.svg" alt="folder">
+                {child.name}
+              </button>
+            : <span class="flex items-center gap-1.5">
+                <img src={`/icons/${child.ext ?? 'file'}.svg`} alt="file">
+                {child.name}
+              </span>
+        }
+        {child.children && <Astro.self file={child} />}
+      </li>
+    ))
+  }
+</ul>
+
+<script is:inline define:vars={{ id }}>
+  const root = document.getElementById(id)
+
+  root?.addEventListener('click', (e) => {
+    const button = e.target.closest('button')
+
+    if (!button) return
+
+    const children = document.querySelector(`[data-name="${button.innerText}"]`)
+    const img = button.querySelector('img')
+
+    if (children.classList.contains('hidden')) {
+      children.classList.remove('hidden')
+      img.src = '/icons/folder-opened.svg'
+    } else {
+      children.classList.add('hidden')
+      img.src = '/icons/folder-closed.svg'
+    }
+  })
+</script>
