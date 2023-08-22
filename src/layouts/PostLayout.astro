@@ -1,13 +1,12 @@
 ---
 import { getEntry } from 'astro:content'
+import type { CollectionEntry } from "astro:content";
 import readingTime from 'reading-time'
 
 import { LOCALES, WORDS_PER_MINUTE } from '@common/constants'
 import Tag from '@components/tag.astro'
 
 import t from '../../public/lang.json'
-import type { CollectionEntry } from "astro:content";
-
 
 import BaseLayout from './BaseLayout.astro'
 
