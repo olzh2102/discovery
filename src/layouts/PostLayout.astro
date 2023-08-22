@@ -6,10 +6,13 @@ import { LOCALES, WORDS_PER_MINUTE } from '@common/constants'
 import Tag from '@components/tag.astro'
 
 import t from '../../public/lang.json'
+import type { CollectionEntry } from "astro:content";
+
 
 import BaseLayout from './BaseLayout.astro'
 
-const { frontmatter } = Astro.props
+const { frontmatter } = Astro.props as {frontmatter: CollectionEntry<'post'>['data'] & { slug: string }}
+
 const { lang } = Astro.params as { lang: keyof typeof LOCALES }
 
 // TODO: read page from somewhere else
@@ -18,9 +21,37 @@ const page = await getEntry('post', frontmatter.slug)
 if (!page) return Astro.redirect('/404/')
 
 const { minutes } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
+
+const publishedTime = new Date(
+  frontmatter.date).toLocaleString(LOCALES[lang],
+  {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+})
+
+const seoOptions = {
+  openGraph: {
+    basic: {
+      title: frontmatter.title,
+      type: 'article',
+      image: frontmatter.heroImageUrl,
+    },
+    article: {
+      publishedTime,
+      authors: frontmatter.authors,
+      tags: frontmatter.tags,
+    },
+    image: {
+      url: frontmatter.heroImageUrl,
+      type: 'png',
+      alt: 'hero image'
+    }
+  }
+}
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+<BaseLayout title={frontmatter.title} description={frontmatter.description} seoOptions={seoOptions}>
   <section class="flex flex-col gap-2">
     <h1 class="uppercase text-2xl mb-5">{frontmatter.title}</h1>
     <img src={frontmatter.heroImageUrl} class="w-full" alt="hero image related to post" />
@@ -32,20 +63,12 @@ const { minutes } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
 
       <div class="flex flex-col">
         <span class="font-bold">{t[lang]['post']['published']}</span>
-        <time datetime={frontmatter.date}>
-          {
-            new Date(frontmatter.date).toLocaleString(LOCALES[lang], {
-              year: 'numeric',
-              month: 'long',
-              day: '2-digit',
-            })
-          }
-        </time>
+        <time datetime={publishedTime}>{publishedTime}</time>
       </div>
 
       <div class="flex flex-col">
         <span class="font-bold">{t[lang]['post']['authors']}</span>
-        <span>{frontmatter.author}</span>
+        <span>{frontmatter.authors.join(', ')}</span>
       </div>
     </div>
   </section>
