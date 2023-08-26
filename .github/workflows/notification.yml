@@ -1,0 +1,23 @@
+name: '💩 New content BotqaBoqBot notification'
+
+on:
+  push:
+    branches:
+      - 'feat/tg-bot'
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+
+      - name: 👷 Setup node
+        uses: actions/setup-node@v3
+        run: npm install
+
+      - name: 🏃‍♂️ Bot script run
+        run: node index.mjs
+        env:
+          TG_TOKEN: ${{secrets.TG_TOKEN}}
+          TG_CHAT_ID: ${{secrets.TG_CHAT_ID}}
