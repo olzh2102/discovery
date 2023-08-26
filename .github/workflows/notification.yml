@@ -14,6 +14,8 @@ jobs:
 
       - name: 👷 Setup node
         uses: actions/setup-node@v3
+
+      - name: 🏃‍♂️ Install deps
         run: npm install
 
       - name: 🏃‍♂️ Bot script run
