@@ -7,6 +7,7 @@ on:
 
 jobs:
   bot:
+    name: 💩 Botqa Bot notification
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout the branch
@@ -18,7 +19,8 @@ jobs:
       - name: 🏃‍♂️ Install deps
         run: npm install
 
-      - name: 🏃‍♂️ Bot script run
+      - name: 🏃 Bot script run
+        working-directory: .github/workflow/notification
         run: node index.mjs
         env:
           TG_TOKEN: ${{secrets.TG_TOKEN}}
