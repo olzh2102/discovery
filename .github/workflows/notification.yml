@@ -20,8 +20,8 @@ jobs:
         run: npm install
 
       - name: 🏃 Bot script run
-        working-directory: ./.github/workflows
-        run: node notification.mjs
+        working-directory: ./.github
+        run: node workflows/notification.mjs
         env:
           TG_TOKEN: ${{secrets.TG_TOKEN}}
           TG_CHAT_ID: ${{secrets.TG_CHAT_ID}}
