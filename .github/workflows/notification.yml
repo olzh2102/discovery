@@ -1,4 +1,4 @@
-name: "💩 New content BotqaBoqBot notification"
+name: "🍜 💩 🤖 📣"
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   new-post:
-    name: 📄 New Post
+    name: 📇 New post
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout the branch
@@ -16,14 +16,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 🔩 Install deps
+      - name: 🍯 Install deps
         working-directory: ./.github
         run: npm install
 
       - name: 🔍 Find new post
         id: "find-new-post"
         working-directory: ./.github/workflows
-        run: yarn zx './workflows/findNewPost.mjs'
+        run: yarn zx './workflows/find-new-post.mjs'
         env:
           SHA: ${{ github.sha }}
 
@@ -32,20 +32,17 @@ jobs:
 
   bot:
     if: ${{ needs.new-post.outputs.link != '' }}
-    name: 💩 Botqa Bot notification
+    name: 🍜 Botqa is notifying you NOW
     needs: new-post
     runs-on: ubuntu-latest
     steps:
-      - name: Output event data
-        run: echo "${{ needs.new-post.outputs.link }}"
-
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
       - name: 👷 Setup node
         uses: actions/setup-node@v3
 
-      - name: 🏃‍♂️ Install deps
+      - name: 🍯 Install deps
         working-directory: ./.github
         run: npm install
 
