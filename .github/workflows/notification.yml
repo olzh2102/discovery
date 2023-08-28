@@ -31,7 +31,7 @@ jobs:
       link: ${{ steps.find-new-post.outputs.link }}
 
   bot:
-    if: ${{ needs.new-post.outputs.link != '' }}
+    if: ${{ contains(needs.new-post.outputs.link, 'en/posts/') }}
     name: 🍜 Botqa is notifying you NOW
     needs: new-post
     runs-on: ubuntu-latest
