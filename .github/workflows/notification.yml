@@ -1,8 +1,9 @@
-name: '💩 New content BotqaBoqBot notification'
+name: "💩 New content BotqaBoqBot notification"
 
 on:
   push:
     branches:
+      - 'feat/tg-bot'
       - main
 
 jobs:
@@ -10,13 +11,16 @@ jobs:
     name: 📄 New Post
     runs-on: ubuntu-latest
     steps:
-      - name: 🏃‍♂️ Install deps
+      - name: 🔩 Install deps
         working-directory: ./.github
         run: npm install
 
       - name: 🔍 Find new post
-        id: 'find-new-post'
+        id: "find-new-post"
+        working-directory: ./.github/workflows
         run: yarn zx './findNewPost.mjs'
+        env:
+          SHA: ${{ github.sha }}
 
     outputs:
       link: ${{ steps.find-new-post.outputs.link }}
