@@ -8,7 +8,7 @@ on:
 
 jobs:
   new-post:
-    name: 📇 New post
+    name: 📇 Check if there is a new post
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout the branch
