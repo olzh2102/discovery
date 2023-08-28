@@ -36,6 +36,9 @@ jobs:
     needs: new-post
     runs-on: ubuntu-latest
     steps:
+      - name: Output event data
+        run: echo "${{ needs.new-post.outputs.link }}"
+
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
