@@ -5,5 +5,5 @@ const bot = new telegram(process.env.TG_TOKEN)
 
 bot.sendMessage(
   process.env.TG_CHAT_ID,
-  'process.env.LINK'
+  process.env.LINK
 )
