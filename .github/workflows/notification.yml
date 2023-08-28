@@ -3,11 +3,28 @@ name: '💩 New content BotqaBoqBot notification'
 on:
   push:
     branches:
-      - 'feat/tg-bot'
+      - main
 
 jobs:
+  new-post:
+    name: 📄 New Post
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏃‍♂️ Install deps
+        working-directory: ./.github
+        run: npm install
+
+      - name: 🔍 Find new post
+        id: 'find-new-post'
+        run: yarn zx './findNewPost.mjs'
+
+    outputs:
+      link: ${{ steps.find-new-post.outputs.link }}
+
   bot:
+    if: ${{ needs.new-post.outputs.link != '' }}
     name: 💩 Botqa Bot notification
+    needs: new-post
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout the branch
@@ -26,3 +43,4 @@ jobs:
         env:
           TG_TOKEN: ${{secrets.TG_TOKEN}}
           TG_CHAT_ID: ${{secrets.TG_CHAT_ID}}
+          LINK: ${{ needs.new-post.outputs.link }}
