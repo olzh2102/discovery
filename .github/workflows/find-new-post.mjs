@@ -5,5 +5,5 @@ const {stdout: modifiedFiles} = await $`git diff --name-only --diff-filter=AM HE
 const newPostName = modifiedFiles.split('\n').find((file) => file.includes('src/content/post/en'))
 console.log("🚀 ~ file: find-new-post.mjs:6 ~ newPostName:", newPostName)
 
-$`echo link=${JSON.stringify(newPostName)} >> ${process.env.GITHUB_OUTPUT}`;
+$`echo link=${JSON.stringify(typeof newPostName === 'undefined' ? '' : newPostName)} >> ${process.env.GITHUB_OUTPUT}`;
 
