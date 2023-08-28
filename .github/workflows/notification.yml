@@ -11,6 +11,9 @@ jobs:
     name: 📄 New Post
     runs-on: ubuntu-latest
     steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+        
       - name: 🔩 Install deps
         working-directory: ./.github
         run: npm install
