@@ -1,0 +1,54 @@
+name: '🍜 💩 🤖 📣'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  new-post:
+    name: 📇 Check if there is a new post
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 🍯 Install deps
+        working-directory: ./.github
+        run: npm install
+
+      - name: 🔍 Find new post
+        id: 'find-new-post'
+        working-directory: ./.github/workflows
+        run: yarn zx './workflows/find-new-post.mjs'
+        env:
+          SHA: ${{ github.sha }}
+
+    outputs:
+      link: ${{ steps.find-new-post.outputs.link }}
+
+  bot:
+    if: ${{ contains(needs.new-post.outputs.link, 'en/posts/') }}
+    name: 🍜 Botqa is notifying you NOW
+    needs: new-post
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+
+      - name: 👷 Setup node
+        uses: actions/setup-node@v3
+
+      - name: 🍯 Install deps
+        working-directory: ./.github
+        run: npm install
+
+      - name: 🏃 Bot script run
+        working-directory: ./.github/workflows
+        run: node notification.mjs
+        env:
+          TG_TOKEN: ${{secrets.TG_TOKEN}}
+          TG_CHAT_ID: ${{secrets.TG_CHAT_ID}}
+          LINK: ${{ needs.new-post.outputs.link }}
