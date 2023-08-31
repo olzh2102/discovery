@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - 'feat/tg-bot'
 
 jobs:
   new-post:
