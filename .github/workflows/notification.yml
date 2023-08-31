@@ -1,9 +1,8 @@
-name: "🍜 💩 🤖 📣"
+name: '🍜 💩 🤖 📣'
 
 on:
   push:
     branches:
-      - 'feat/tg-bot'
       - main
 
 jobs:
@@ -21,7 +20,7 @@ jobs:
         run: npm install
 
       - name: 🔍 Find new post
-        id: "find-new-post"
+        id: 'find-new-post'
         working-directory: ./.github/workflows
         run: yarn zx './workflows/find-new-post.mjs'
         env:
