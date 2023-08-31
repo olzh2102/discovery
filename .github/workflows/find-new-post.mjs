@@ -22,4 +22,3 @@ function getNewPostLink() {
 const newPostLink = getNewPostLink()
 
 $`echo link=${JSON.stringify(typeof newPostLink === 'undefined' ? '' : newPostLink)} >> ${process.env.GITHUB_OUTPUT}`;
-
