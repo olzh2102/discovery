@@ -36,7 +36,7 @@ const seoOptions = {
     basic: {
       title: frontmatter.title,
       type: 'article',
-      image: BASE_URL + '/' + frontmatter.heroImageUrl,
+      image: BASE_URL + frontmatter.heroImageUrl,
     },
     article: {
       publishedTime,
@@ -44,7 +44,7 @@ const seoOptions = {
       tags: frontmatter.tags,
     },
     image: {
-      url: BASE_URL + '/' + frontmatter.heroImageUrl,
+      url: BASE_URL + frontmatter.heroImageUrl,
       type: 'png',
       alt: 'hero image'
     }
