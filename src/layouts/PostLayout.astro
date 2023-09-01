@@ -14,8 +14,6 @@ const { frontmatter } = Astro.props as {frontmatter: CollectionEntry<'post'>['da
 
 const { lang } = Astro.params as { lang: keyof typeof LOCALES }
 
-const BASE_URL = 'https://www.botqa.xyz'
-
 // TODO: read page from somewhere else
 const page = await getEntry('post', frontmatter.slug)
 
@@ -36,7 +34,7 @@ const seoOptions = {
     basic: {
       title: frontmatter.title,
       type: 'article',
-      image: BASE_URL + frontmatter.heroImageUrl,
+      image: frontmatter.heroImageUrl,
     },
     article: {
       publishedTime,
@@ -44,7 +42,7 @@ const seoOptions = {
       tags: frontmatter.tags,
     },
     image: {
-      url: BASE_URL + frontmatter.heroImageUrl,
+      url: frontmatter.heroImageUrl,
       type: 'png',
       alt: 'hero image'
     }
