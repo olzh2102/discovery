@@ -1,8 +1,5 @@
 import { useState } from 'react'
 
-import checkIcon from '/images/check.svg'
-import copyIcon from '/images/copy.svg'
-
 export default function CodeBlock({
   children,
   path,
@@ -36,7 +33,11 @@ export default function CodeBlock({
           if (text) await copyText(text)
         }}
       >
-        {copied ? <img src={checkIcon} alt="copied" /> : <img src={copyIcon} alt="copy" />}
+        {copied ? (
+          <img src="/images/check.svg" alt="copied" />
+        ) : (
+          <img src="/images/copy.svg" alt="copy" />
+        )}
       </button>
       {children}
     </figure>

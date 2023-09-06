@@ -11,4 +11,12 @@ export const SLUG_MAP = {
     en: 'localhost-https-wild-west',
     ru: '',
   },
+  'horizontal-scroll-wild-west': {
+    en: '',
+    ru: 'horizontal-scroll-soviet',
+  },
+  'horizontal-scroll-soviet': {
+    en: '',
+    ru: 'horizontal-scroll-wild-west',
+  },
 }
