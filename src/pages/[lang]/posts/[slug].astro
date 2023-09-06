@@ -1,11 +1,13 @@
 ---
 import { LOCALES, SLUG_MAP } from '@common/constants';
 import { getEntry } from 'astro:content'
+import { ViewTransitions } from 'astro:transitions';
+
 
 const { pathname } = Astro.url;
 const { lang, slug } = Astro.params as { lang: keyof typeof LOCALES, slug: keyof typeof SLUG_MAP }
 
-const page = await getEntry('post', SLUG_MAP[slug][lang] || slug)
+const page = await getEntry('post', SLUG_MAP[slug]?.[lang] || slug)
 
 if (!page) return Astro.redirect('/404/')
 
@@ -13,3 +15,4 @@ const { Content } = await page.render()
 ---
 
 <Content />
+<ViewTransitions />
