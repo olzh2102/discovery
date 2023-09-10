@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 html {
   --bg-header: #f6f4fa;
   --bg-gradient-bottom: #f2eef9;
@@ -20,8 +21,13 @@ html.dark {
 }
 
 body {
+  font-family: 'Montserrat', sans-serif;
   overscroll-behavior-y: none;
   line-height: 1.75em;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 @layer base {

@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content'
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry } from 'astro:content'
 import readingTime from 'reading-time'
 
 import { LOCALES, WORDS_PER_MINUTE } from '@common/constants'
@@ -10,7 +10,9 @@ import t from '../../public/lang.json'
 
 import BaseLayout from './BaseLayout.astro'
 
-const { frontmatter } = Astro.props as {frontmatter: CollectionEntry<'post'>['data'] & { slug: string }}
+const { frontmatter } = Astro.props as {
+  frontmatter: CollectionEntry<'post'>['data'] & { slug: string }
+}
 
 const { lang } = Astro.params as { lang: keyof typeof LOCALES }
 
@@ -21,12 +23,10 @@ if (!page) return Astro.redirect('/404/')
 
 const { minutes } = readingTime(page.body, { wordsPerMinute: WORDS_PER_MINUTE })
 
-const publishedTime = new Date(
-  frontmatter.date).toLocaleString(LOCALES[lang],
-  {
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
+const publishedTime = new Date(frontmatter.date).toLocaleString(LOCALES[lang], {
+  year: 'numeric',
+  month: 'long',
+  day: '2-digit',
 })
 
 const seoOptions = {
@@ -44,20 +44,20 @@ const seoOptions = {
     image: {
       url: frontmatter.heroImageUrl,
       type: 'png',
-      alt: 'hero image'
-    }
-  }
+      alt: 'hero image',
+    },
+  },
 }
 ---
 
 <BaseLayout title={frontmatter.title} description={frontmatter.description} seoOptions={seoOptions}>
   <section class="flex flex-col gap-2">
-    <h1 class="uppercase text-2xl mb-5">{frontmatter.title}</h1>
+    <h1 class="uppercase text-2xl font-bold mb-5">{frontmatter.title}</h1>
     <img src={frontmatter.heroImageUrl} class="w-full" alt="hero image related to post" />
     <div class="h-full flex flex-wrap gap-4 my-6">
       <div class="flex flex-col">
         <span class="font-bold">{t[lang]['post']['timeToRead']}</span>
-        <span>~{Math.ceil(minutes)} {t[lang]['post']['minsRead']}</span>
+        <span>~{Math.ceil(minutes)} {' '} {t[lang]['post']['minsRead']}</span>
       </div>
 
       <div class="flex flex-col">

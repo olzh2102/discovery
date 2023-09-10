@@ -1,6 +1,7 @@
 ---
 import Navigation from '@components/Navigation.astro'
-import { SEO, Props as SEOProps } from 'astro-seo'
+import { SEO } from 'astro-seo'
+import type { Props as SEOProps } from 'astro-seo'
 import '../styles/main.css'
 
 type Props = { title: string, description: string, seoOptions?: Omit<SEOProps, 'title' | 'description'> }
@@ -37,7 +38,7 @@ const { lang } = Astro.params
   </body>
 </html>
 
-<script is:inline>
+<script>
   const theme = (() => {
     if (typeof localStorage != 'undefined' && localStorage.getItem('theme'))
       return localStorage.getItem('theme')
@@ -48,16 +49,5 @@ const { lang } = Astro.params
   if (theme == 'light') document.documentElement.classList.remove('dark')
   else document.documentElement.classList.add('dark')
 
-  window.localStorage.setItem('theme', theme)
+  if (theme) window.localStorage.setItem('theme', theme)
 </script>
-
-<style is:global>
-  :root {
-    --accent: 124, 58, 237;
-    --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-  }
-  html {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f6f6f1;
-  }
-</style>

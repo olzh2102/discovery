@@ -1,0 +1,68 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: Горизонтальная прокрутка
+date: 2023-09-07
+authors: ["Динмухамед Сайлаубек", "Олжас Куриков"]
+description: Как защитить свой локальный сервер
+draft: false
+category: JavaScript
+slug: horizontal-scroll-soviet
+tags: ["javascript", "react"]
+heroImageUrl: /posts/localhost-https/hero.png
+---
+
+import CodeBlock from "@components/CodeBlock";
+import FileTree from "@components/FileTree.astro";
+
+Наверняка вы встречали сайты, где вы скроллите вниз, а страница движется горизонтально.
+В этой статье мы реализуем эту фичу на чистом `JS` и на `React`-е.
+
+## Vanilla JS
+
+Пускай у нас на странице имеются два блока, каждый из которых заполняет весь экран, и расположены они на одной горизонтальной оси внутри контейнера.
+
+<CodeBlock path="./index.html" client:load>
+```html
+
+<div class="container">
+  <div class="page page-1"></div>
+  <div class="page page-2"></div>
+</div>
+```
+</CodeBlock>
+
+И мы хотим, чтобы при обычном вертикальном скролле, страница прокручивалась горизонтально. Для этого, сперва мы задаём контейнеру `overflow-x: scroll`, чтобы он был прокручиваемым. Затем слушаем событие `wheel` на нашем контейнере, которое срабатывает при скролле посредством мышки или трекпада.
+
+<CodeBlock path="./index.js" client:load>
+```javascript
+
+const container = document.querySelector('.container')
+
+container.addEventListener('wheel', (event) => {
+  // your code goes here
+})
+```
+</CodeBlock>
+
+Теперь мы должны понять в каком направлении скроллит пользователь, так как событие `wheel` срабатывает как в вертикальном, так и в горизонтальном направлении. Для этого мы используем два свойства объекта `event`: `deltaX` и `deltaY`. `deltaX` представляет собой величину горизонтального скролла, а `deltaY` -- вертикального.
+
+Мы будем обновлять свойство контейнера `scrollLeft`, которое отвечает за прокрутку в горизонтальном направлении. Заметим, что `deltaX` и `deltaY` могут быть как положительными, так и отрицательными. К примеру, если `deltaY` имеет отрицательное значение, то пользователь скроллит вниз, а если положительное, то вверх. `scrollLeft` работает по такому же принципу: если оно положительно, то скролл влево, если отрицательно -- вправо.
+
+<CodeBlock path="./index.js" client:load>
+```javascript
+
+const container = document.querySelector('.container')
+
+container.addEventListener('wheel', (event) => {
+  event.preventDefault()
+
+  container.scrollLeft += e.deltaY
+  container.scrollLeft += e.deltaX
+})
+```
+</CodeBlock>
+
+А давайте теперь представим ситуацию, когда у вас на сайте несколько прокручиваемых элементов; 
+при обычном скролле вниз мы движемся по оси Y и при встрече элемента с горизонтальной прокруткой,
+мы начинаем двигаться по оси X. И при завершении прокрутки по горизонтали, страница должна прокручиваться дальше вниз.
+С вышеуказанном слушателем это не сработает.

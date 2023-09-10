@@ -12,7 +12,7 @@ const currentPath = Astro.url.pathname.slice(1).replace(String(lang) + '/', '')
   <nav class="flex gap-2 items-end">
     <a class="flex items-end gap-1 mr-2" href={`/${lang}/`}>
       <Image src="/botqa_logo.gif"  width="40" height="60" alt="logo"/>
-      <h1 class="uppercase absolute -top-full -left-full sm:static">botqa</h1>
+      <h1 class="text-2xl font-bold uppercase absolute -top-full -left-full sm:static">botqa</h1>
     </a>
     <a class={currentPath == 'timeline' ? 'line-through' : ''} href="timeline">Timeline</a>
     <a class={currentPath == 'photography' ? 'line-through' : ''} href="photography">Photography</a>
