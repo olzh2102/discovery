@@ -1,7 +1,6 @@
 ---
 import { LOCALES, SLUG_MAP } from '@common/constants';
 import { getEntry } from 'astro:content'
-import { ViewTransitions } from 'astro:transitions';
 
 
 const { pathname } = Astro.url;
@@ -15,4 +14,3 @@ const { Content } = await page.render()
 ---
 
 <Content />
-<ViewTransitions />
