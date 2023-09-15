@@ -2,8 +2,6 @@
 import { LOCALES, SLUG_MAP } from '@common/constants';
 import { getEntry } from 'astro:content'
 
-
-const { pathname } = Astro.url;
 const { lang, slug } = Astro.params as { lang: keyof typeof LOCALES, slug: keyof typeof SLUG_MAP }
 
 const page = await getEntry('post', SLUG_MAP[slug]?.[lang] || slug)
