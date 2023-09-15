@@ -13,6 +13,7 @@ heroImageUrl: /posts/horizontal-scroll/hero.gif
 
 import CodeBlock from "@components/CodeBlock";
 import FileTree from "@components/FileTree.astro";
+import Scroller from '@components/Scroller.astro';
 
 Наверняка вы встречали сайты, где вы скроллите вниз, а страница движется горизонтально.
 В этой статье мы реализуем эту фичу на чистом `JS` и на `React`-е.
@@ -31,6 +32,8 @@ import FileTree from "@components/FileTree.astro";
 ```
 </CodeBlock>
 
+<Scroller />
+
 И мы хотим, чтобы при обычном вертикальном скролле, страница прокручивалась горизонтально. Для этого, сперва мы задаём контейнеру `overflow-x: scroll`, чтобы он был прокручиваемым. Затем слушаем событие `wheel` на нашем контейнере, которое срабатывает при скролле посредством мышки или трекпада.
 
 <CodeBlock path="./index.js" client:load>
@@ -48,6 +51,8 @@ container.addEventListener('wheel', (event) => {
 
 Мы будем обновлять свойство контейнера `scrollLeft`, которое отвечает за прокрутку в горизонтальном направлении. Заметим, что `deltaX` и `deltaY` могут быть как положительными, так и отрицательными. К примеру, если `deltaY` имеет отрицательное значение, то пользователь скроллит вниз, а если положительное, то вверх. `scrollLeft` работает по такому же принципу: если оно положительно, то скролл влево, если отрицательно -- вправо.
 
+Кроме этого нам необходимо вызвать функцию `preventDefault` объекта `event`, так как по умолчанию, при событии `wheel` происходит прокрутка по вертикали.
+
 <CodeBlock path="./index.js" client:load>
 ```javascript
 
@@ -56,8 +61,8 @@ const container = document.querySelector('.container')
 container.addEventListener('wheel', (event) => {
   event.preventDefault()
 
-  container.scrollLeft += e.deltaY
-  container.scrollLeft += e.deltaX
+  container.scrollLeft += event.deltaY
+  container.scrollLeft += event.deltaX
 })
 ```
 </CodeBlock>
@@ -66,3 +71,27 @@ container.addEventListener('wheel', (event) => {
 при обычном скролле вниз мы движемся по оси Y и при встрече элемента с горизонтальной прокруткой,
 мы начинаем двигаться по оси X. И при завершении прокрутки по горизонтали, страница должна прокручиваться дальше вниз.
 С вышеуказанном слушателем это не сработает.
+Для получении желаемого эффекта, мы должны "наблюдать" достигли ли мы края контейнера при горизонтальной прокрутке.
+Cooтветственно такой же механизм происходит при прокрутке снизу вверх. Когда мы достигнем края контейнера, нам не нужен `preventDefault`, что нам позволяет дальше скроллить по странице вниз/вверх.
+
+<CodeBlock  path="./index.js" client:load>
+```javascript
+
+container.addEventListener('wheel', (event) => {
+  const isReachedLeftEdge = container.scrollLeft === 0
+
+  const containerWidth = container.getBoundingClientRect().width
+
+  const isReachedRightEdge =
+    container.scrollLeft === container.scrollWidth - containerWidth
+
+  if (!isReachedLeftEdge && !isReachedRightEdge) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  container.scrollLeft += event.deltaY
+  container.scrollLeft += event.deltaX
+})
+```
+</CodeBlock>
