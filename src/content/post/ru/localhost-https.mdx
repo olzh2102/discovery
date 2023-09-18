@@ -149,7 +149,6 @@ COPY . ./app
 EXPOSE 3000
 
 CMD ["yarn", "dev"]
-
 ````
 </CodeBlock>
 
@@ -192,7 +191,6 @@ openssl req -x509 -out /etc/nginx/certs/localhost.crt \
  -extensions EXT \
  -config <(printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 fi
-
 ````
 </CodeBlock>
 
@@ -236,9 +234,9 @@ server {
 proxy_http_version 1.1;
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection "upgrade";
-
 ```
 </CodeBlock>
 
-<p class="flex gap-1.5 items-center">Ссылка на репозиторий: [![repo](/images/github.svg)](https://github.com/evitla/nextjs-https)</p>
-
+<div class="mt-5 [&>*]:flex [&>*]:gap-1.5 [&>*]:items-center">
+  Ссылка на репозиторий: [![repo](/images/github.svg)](https://github.com/evitla/botqa-examples)
+</div>

@@ -1,0 +1,128 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: Horizontal scroll
+date: 2023-09-07
+authors: ["Dinmukhamed Sailaubek", "Olzhas Kurikov"]
+description: How to SSL secure your localhost server
+draft: false
+category: JavaScript
+slug: horizontal-scroll-wild-west
+tags: ["javascript", "react", "webapi"]
+heroImageUrl: /posts/horizontal-scroll/hero.gif
+---
+import CodeBlock from "@components/CodeBlock";
+import FileTree from "@components/FileTree.astro";
+
+Surely you've come across web applications where you scroll down,
+and it scrolls horizontally. 
+In this article, we will implement this feature using JavaScript.
+
+## UI Layout preparation for scrolling
+
+Let's say we have two `div` blocks on the page, 
+each filling the entire screen, 
+and they are positioned on the same horizontal axis within a given `container`.
+
+<CodeBlock path="./index.html" client:load>
+```html
+
+<div class="container">
+  <div class="page page-1"></div>
+  <div class="page page-2"></div>
+</div>
+```
+</CodeBlock>
+
+And we want the page to scroll horizontally 
+when the user performs a standard vertical scroll. 
+To achieve this, we first set `overflow-x: scroll` on the container 
+to make it horizontally scrollable. 
+Then, we are going to listen for `wheel` event on our container, 
+which triggers when the user scrolls using a mouse or trackpad.
+
+<CodeBlock path="./index.js" client:load>
+```javascript
+
+const container = document.querySelector('.container')
+
+container.addEventListener('wheel', (event) => {
+  // your code goes here
+})
+```
+</CodeBlock>
+
+## Interaction with WebAPI
+
+Now we need to determine in which direction the user is scrolling, 
+as the `wheel` event triggers for both, vertical and horizontal scrolling. 
+To do this, we use two properties of the `event` object: `deltaX` and `deltaY`. 
+`deltaX` represents the amount of horizontal scrolling, 
+and `deltaY` represents the amount of vertical scrolling.
+
+We will update the `scrollLeft` property of the container, 
+which is responsible for horizontal scrolling. 
+Note that `deltaX` and `deltaY` can be both positive and negative. 
+For example, if `deltaY` has a negative value, the user is scrolling down, 
+and if it has a positive value, the user is scrolling up. 
+The `scrollLeft` property works similarly: if it's positive, 
+it scrolls to the left, and if it's negative, it scrolls to the right.
+
+Additionally, we must invoke `preventDefault` method of `event` object, 
+because by default `wheel` event scrolls vertically.
+
+<CodeBlock path="./index.js" client:load>
+```javascript
+
+const container = document.querySelector('.container')
+
+container.addEventListener('wheel', (event) => {
+  event.preventDefault()
+
+  container.scrollLeft += event.deltaY
+  container.scrollLeft += event.deltaX
+})
+```
+</CodeBlock>
+
+## Continuous scrolling on the page
+
+Let's imagine a scenario, where we have multiple scrolling elements; so to say
+while we are scrolling vertically and once we meet horizontal scrollable container,
+we start scrolling horizontally and when end is reached, we are going to continue scrolling
+on y-axis.
+Aforementioned implementation won't handle that, hence we need to adjust our code a little bit.
+
+<CodeBlock  path="./index.js" client:load>
+```javascript
+
+container.addEventListener('wheel', (event) => {
+  const isReachedLeftEdge = container.scrollLeft === 0
+
+  const containerWidth = container.getBoundingClientRect().width
+
+  const isReachedRightEdge =
+    container.scrollLeft === container.scrollWidth - containerWidth
+
+  if (!isReachedLeftEdge && !isReachedRightEdge) event.preventDefault()
+
+  container.scrollLeft += event.deltaY
+  container.scrollLeft += event.deltaX
+})
+```
+</CodeBlock>
+
+If you encounter your scrolling being fast, you can change that by multiplying proportional value:
+
+<CodeBlock client:load>
+```javascript
+
+container.scrollLeft += event.deltaY * 0.5
+container.scrollLeft += event.deltaX * 0.5
+```
+</CodeBlock>
+
+React implementation can be found in the repository.
+
+<div class="mt-5 [&>*]:flex [&>*]:gap-1.5 [&>*]:items-center">
+  Link to repo: [![repo](/images/github.svg)](https://github.com/evitla/botqa-examples)
+</div>

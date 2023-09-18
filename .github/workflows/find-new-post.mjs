@@ -3,14 +3,14 @@ import {$} from 'zx';
 const EN_CONTENT_PATH = 'src/content/post/en'
 const BASE_POST_URL = 'https://www.botqa.xyz/en/posts'
 
-const { stdout: modifiedFiles } =
-  await $`git diff --name-only --diff-filter=AMR ${process.env.SHA}^1 ${process.env.SHA}`
+const { stdout: addedFiles } =
+  await $`git diff --name-only --diff-filter=A ${process.env.SHA}^1 ${process.env.SHA}`
 
-console.log('🚀 ~ file: find-new-post.mjs:4 ~ modifiedFiles:', modifiedFiles)
+console.log('🚀 ~ file: find-new-post.mjs:4 ~ addedFiles:', addedFiles)
 console.log('🚀 ~ file: find-new-post.mjs:4 ~ process.env.SHA:', process.env.SHA)
 
 function getNewPostLink() {
-  const newPostPath = modifiedFiles.split('\n').find((file) => file.includes(EN_CONTENT_PATH))
+  const newPostPath = addedFiles.split('\n').find((file) => file.includes(EN_CONTENT_PATH))
   console.log("🚀 ~ file: find-new-post.mjs:6 ~ newPostPath:", newPostPath)
   
   if (!newPostPath) return

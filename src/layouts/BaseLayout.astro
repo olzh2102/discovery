@@ -1,6 +1,11 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+
+import { SEO } from 'astro-seo'
+import type { Props as SEOProps } from 'astro-seo'
+
 import Navigation from '@components/Navigation.astro'
-import { SEO, Props as SEOProps } from 'astro-seo'
+
 import '../styles/main.css'
 
 type Props = { title: string, description: string, seoOptions?: Omit<SEOProps, 'title' | 'description'> }
@@ -16,6 +21,7 @@ const { lang } = Astro.params
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <ViewTransitions />
     <SEO 
       title={`Botqa | ${title}`}
       description={description}
@@ -36,28 +42,3 @@ const { lang } = Astro.params
     <script src="../scripts/vercel/analytics.ts"></script>
   </body>
 </html>
-
-<script is:inline>
-  const theme = (() => {
-    if (typeof localStorage != 'undefined' && localStorage.getItem('theme'))
-      return localStorage.getItem('theme')
-
-    return 'light'
-  })()
-
-  if (theme == 'light') document.documentElement.classList.remove('dark')
-  else document.documentElement.classList.add('dark')
-
-  window.localStorage.setItem('theme', theme)
-</script>
-
-<style is:global>
-  :root {
-    --accent: 124, 58, 237;
-    --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-  }
-  html {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f6f6f1;
-  }
-</style>

@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { ViewTransitions } from 'astro:transitions';
 
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { LOCALES } from '@common/constants';
@@ -47,4 +46,3 @@ const posts = await getCollection('post', ({ id }) => id.startsWith(`${lang}/`))
 		</ul>
 	</div>
 </BaseLayout>
-<ViewTransitions />

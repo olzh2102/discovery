@@ -16,7 +16,7 @@ export const SLUG_MAP = {
     ru: 'horizontal-scroll-soviet',
   },
   'horizontal-scroll-soviet': {
-    en: '',
-    ru: 'horizontal-scroll-wild-west',
+    en: 'horizontal-scroll-wild-west',
+    ru: '',
   },
 }
