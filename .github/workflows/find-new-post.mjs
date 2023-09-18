@@ -4,7 +4,7 @@ const EN_CONTENT_PATH = 'src/content/post/en'
 const BASE_POST_URL = 'https://www.botqa.xyz/en/posts'
 
 const { stdout: addedFiles } =
-  await $`git diff --name-only --diff-filter=A ${process.env.SHA}^1 ${process.env.SHA}`
+  await $`git diff --name-only --diff-filter=AM ${process.env.SHA}^1 ${process.env.SHA}`
 
 console.log('🚀 ~ file: find-new-post.mjs:4 ~ addedFiles:', addedFiles)
 console.log('🚀 ~ file: find-new-post.mjs:4 ~ process.env.SHA:', process.env.SHA)
