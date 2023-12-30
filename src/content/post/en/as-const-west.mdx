@@ -1,0 +1,40 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: Underpriced feature of TypeScript - as const
+date: 2023-12-30
+authors: ["Olzhas Kurikov"]
+description: TypeScript underdog "as const"
+draft: false
+category: TypeScript
+slug: as-const-wild-west
+tags: ["javascript", "typescript"]
+heroImageUrl: /posts/as-const/hero.png
+---
+
+import CodeBlock from "@components/CodeBlock";
+
+Let's assume we have an simple JavaScript object as below:
+
+<CodeBlock client:load>
+```ts
+
+const players = {
+    forward: 'jota',
+    midfield: 'endo',
+    keeper: 'alisson'
+}
+````
+</CodeBlock>
+
+And now imagine you have a function `getPlayer` that takes a parameter as one of values of `players`. Intuitively
+you tended to do so (if not `any` 😏):
+
+<CodeBlock>
+```ts
+
+function getPlayer(p: 'jota' | 'endo' | 'alisson') {}
+```
+</CodeBlock>
+
+Be honest here, this looks depressing; repeating ourselves and having multiple source of truth that sooner or later will shoot you in your leg.
+This might work if you pass argument explicitely as:
