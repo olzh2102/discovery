@@ -1,0 +1,139 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: Underpriced feature of TypeScript - as const
+date: 2024-01-02
+authors: ["Olzhas Kurikov"]
+description: TypeScript underdog "as const"
+draft: false
+category: TypeScript
+slug: as-const-wild-west
+tags: ["javascript", "typescript"]
+heroImageUrl: /posts/as-const/hero.png
+---
+
+import CodeBlock from "@components/CodeBlock";
+
+Let's assume we have an simple JavaScript object as below:
+
+<CodeBlock>
+```ts
+
+const players = {
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson'
+}
+````
+</CodeBlock>
+
+And now imagine you have a function `getPlayer` that takes a parameter as one of values of `players`. Intuitively
+you tended to do so (if not `any` 😏):
+
+<CodeBlock>
+```ts
+
+function getPlayer(p: 'Jota' | 'Endo' | 'Alisson') {}
+```
+</CodeBlock>
+
+Be honest here, this looks depressing; repeating ourselves and having multiple source of truth that sooner or later will shoot you in your leg.
+This might work if you pass argument explicitely as:
+
+<CodeBlock>
+```ts
+
+function getPlayer('Jota') {}
+function getPlayer('Endo') {}
+function getPlayer('Alisson') {}
+```
+</CodeBlock>
+
+However, what would happen if we want to derive one from another:
+
+<CodeBlock>
+```ts
+
+getPlayer(players.forward) // ts-error expecting "Jota" | "Endo" | "Alisson", but you passed string
+```
+</CodeBlock>
+
+TypeScript will actually yell at us, saying that passing `string` isn't type of `Jota` or `Endo` or `Alisson`.
+And the reason for that is palyers object can be changed:
+
+<CodeBlock>
+```ts
+
+players.forward = 'Garnacho'
+```
+</CodeBlock>
+
+We can fix `const players` so it cannot be changed; with `as const`:
+
+<CodeBlock>
+```ts
+
+const players = {
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson'
+} as const
+````
+</CodeBlock>
+
+And now, if we try to change object like before, TypeScript will immediately underline it with error:
+
+<CodeBlock>
+```ts
+
+players.forward = 'Garnacho' // ts-error: Cannot assign to 'forward' because it is a read-only property.
+```
+</CodeBlock>
+
+So, what we got here is `as const` makes object properties `readonly`. 
+It works similar to `Object.freeze`, except `Object.freeze` won't work with deep nested objects:
+
+<CodeBlock>
+```ts
+
+const players = Object.freeze({
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson'
+})
+
+players.forward = 'Garnacho' // same error as before (read-only property)
+
+// BUT
+const players = Object.freeze({
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson',
+    coach: {
+        manager: 'Klopp'
+    }
+})
+
+players.coach.manager = 'Alonso' // no problem 
+````
+</CodeBlock>
+
+Let's go back now to repetetive stuff, and solve it with creating type for that:
+
+<CodeBlock>
+```ts
+
+type Player = (typeof players)[keyof typeof players] // "Jota" | "Endo" | "Alisson"
+```
+</CodeBlock>
+
+Basically, we do is `Object.values` on `players`, but on type level. Now we can pass argument to our function either way:
+
+<CodeBlock>
+```ts
+
+function getPlayer("Jota") // no problem
+function getPlayer(players.forward) // no problem
+```
+</CodeBlock>
+
+Use it 😉 and don't abuse it)
