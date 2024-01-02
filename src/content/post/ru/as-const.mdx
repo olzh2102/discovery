@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/PostLayout.astro
 title: Недооциненная фича as const в TypeScript
-date: 2023-12-30
+date: 2024-01-02
 authors: ["Олжас Куриков"]
 description: Как можно круто использовать as const в TypeScript
 draft: false
@@ -10,3 +10,130 @@ slug: as-const-sovier
 tags: ["javascript", "typescript"]
 heroImageUrl: /posts/as-const/hero.png
 ---
+import CodeBlock from "@components/CodeBlock";
+
+Предположим, у нас есть простой объект JavaScript:
+
+<CodeBlock>
+```ts
+
+const players = {
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson'
+}
+````
+</CodeBlock>
+
+А теперь представьте, что у вас есть функция `getPlayer`, которая принимает параметром одно из значений `players`. Интуитивно
+вам бы хотелось сделать вот так (возможно даже `any` 😏):
+
+<CodeBlock>
+```ts
+
+function getPlayer(p: 'Jota' | 'Endo' | 'Alisson') {}
+```
+</CodeBlock>
+
+Давайте будем честны - это выглядит на 100% потенциальным кандидатом на баг, если конечно
+передавать аргумент точь в точь:
+
+<CodeBlock>
+```ts
+
+function getPlayer('Jota') {}
+function getPlayer('Endo') {}
+function getPlayer('Alisson') {}
+```
+</CodeBlock>
+
+Однако что произойдет, если мы будем передавать аргумент как ниже:
+
+<CodeBlock>
+```ts
+
+getPlayer(players.forward) // ts-error expecting "Jota" | "Endo" | "Alisson", but you passed string
+```
+</CodeBlock>
+
+TypeScript конечно же будет ругаться, показывая что мы передаем строку, а не "Jota" | "Endo" | "Alisson".
+Все из-за того, что в JavaScript свойство объект можно легко и без проблем поменять:
+
+<CodeBlock>
+```ts
+
+players.forward = 'Garnacho'
+```
+</CodeBlock>
+
+Мы можем исправить эту ситуацию в конце объекта добавив `as const`:
+
+<CodeBlock>
+```ts
+
+const players = {
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson'
+} as const
+````
+</CodeBlock>
+
+И теперь, если мы попытаемся изменить объект, как раньше, TypeScript сразу же подчеркнет его с ошибкой:
+
+<CodeBlock>
+```ts
+
+players.forward = 'Garnacho' // ts-error: Cannot assign to 'forward' because it is a read-only property.
+```
+</CodeBlock>
+
+Итак, мы узнаем то, что `as const` делает свойства объекта `readonly`.
+Он работает аналогично `Object.freeze`, за исключением того, что Object.freeze не работает с глубоко вложенными объектами:
+
+<CodeBlock>
+```ts
+
+const players = Object.freeze({
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson'
+})
+
+players.forward = 'Garnacho' // same error as before (read-only property)
+
+// BUT
+const players = Object.freeze({
+    forward: 'Jota',
+    midfield: 'Endo',
+    keeper: 'Alisson',
+    coach: {
+        manager: 'Klopp'
+    }
+})
+
+players.coach.manager = 'Alonso' // no problem 
+````
+</CodeBlock>
+
+Давайте теперь вернемся к повторяющимся вещам и решим их, создав для этого тип:
+
+<CodeBlock>
+```ts
+
+type Player = (typeof players)[keyof typeof players] // "Jota" | "Endo" | "Alisson"
+```
+</CodeBlock>
+
+По сути, мы делаем Object.values для `players`, но на уровне типа. 
+Теперь мы можем передать аргумент нашей функции любым способом:
+
+<CodeBlock>
+```ts
+
+function getPlayer("Jota") // no problem
+function getPlayer(players.forward) // no problem
+```
+</CodeBlock>
+
+Пользуйтесь 😉 и не злоупотребляйте)
