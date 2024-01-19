@@ -1,0 +1,183 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: Custom React Hook to recognize whether is audio on using WebAudio API as in Google Meet
+date: 2024-01-10
+authors: ["Olzhas Kurikov"]
+description: How to make so that it is visible when someone is speaking using WebAudio API
+draft: false
+category: ReactJS
+slug: use-is-audio-wild-west
+tags: ["javascript", "react", "webaudio"]
+heroImageUrl: /posts/use-is-audio/hero.png
+---
+
+import Quote from "@components/Quote.astro";
+import CodeBlock from "@components/CodeBlock.tsx";
+
+Have you ever wondered `Hm, it would be nice to see how Google Meeting's user's speech reflects on sound icon`? 🤔 
+That is why we are here, I am gonna explain how that sh** works and we are going to implement it as well as custom ReactJS hook.
+However, the code itself is not super long and complex, hence it can be adjustted to any framework and integrated into any audio/mic 
+related widget/app/project. Let's get into it 🚀
+
+## TL;DR
+If you don't want to spend your time on understanding the concept, and just want to start using it: 
+<div class="mt-5 [&>*]:flex [&>*]:gap-1.5 [&>*]:items-center">
+  Link to NPM: [![repo](/images/npm.svg)](https://www.npmjs.com/package/use-is-audio-active)
+</div>
+
+### Arrangement
+
+As you might guess, this hook must utilize WebAudio API, specifically AudioContext object. Lemme now explain what it does;
+
+If you MDN AudioContext interface, that is what you are going to get:
+
+<Quote variant="info">
+    The AudioContext interface represents an audio-processing graph built from audio modules linked together, 
+    each represented by an AudioNode.
+    An audio context controls both the creation of the nodes it contains and the execution of the audio processing, 
+    or decoding. You need to create an AudioContext before you do anything else, as everything happens inside a context. 
+    It's recommended to create one AudioContext and reuse it instead of initializing a new one each time, and 
+    it's OK to use a single AudioContext for several different audio sources and pipeline concurrently.
+</Quote>
+
+Basically what they mean is before working with audio processing, one must create a new AudioContext. 
+Think of it as having a digital audio workshop, where one can create, connect, and control sounds for a wide 
+range of audio applications on the web. And one of the main tool in the workshop is Analyser; in simple terms,
+it is audio microscope that let's you look closely at sound and see what is happening inside of it. BUT...to work
+with audio in the workship, we need to have an audio to work with:
+
+<CodeBlock client:load>
+    ```typescript
+
+    const audioCtx = new AudioContext() // workshop
+       
+    const analyser = audioCtx.createAnalyser() // "audio microscope" in the workship
+    analyser.fftSize = 2048 // fft size comes as argument from outside, bigger number - more sensitive
+
+    const audioSource = audioCtx.createMediaStreamSource(source) // source comes as argument from outside (stream with video/audio)
+    audioSource.connect(analyser) // using the tool to investigate the audio
+    ```
+</CodeBlock>
+
+Now since we would like to know is an user is speaking at the moment, meaning what is the magnitude of audio frequency.
+To do so, we need to cut off the second half of FFT output (there is complex explanation why the output is so, if you want to read more about it, [here you go](https://brianmcfee.net/dstbook-site/content/ch06-dft-properties/Conjugate-Symmetry.html))
+
+<CodeBlock>
+    ```typescript
+
+    const halfFFT = analyser.frequencyBinCount
+    const magnitudes = new Uint8Array(halfFFT) // array of length of halfFFT filled with 0's
+    ```
+</CodeBlock>
+
+### Action
+
+So, we are now prepared to identify in real-time whether an user is speaking :)
+Let's write a simple function that will be called on each animation frame.
+
+<CodeBlock>
+    ```typescript
+
+    function update() {
+        analyser.getByteTimeDomainData(magnitudes)
+
+        const sum = magnitudes.reduce((a, b) => a + b, 0)
+        const average = sum / magnitudes.length
+        const normalized = average / 128
+
+        if (normalized >= 1) // person is speaking
+
+        requestAnimationFrame(update)
+    }
+    ```
+</CodeBlock>
+
+If you remember, earlier we have created `magnitudes` array filled initially with 0's. And above method `getByteTimeDomainData` of `analyser`
+fills up this array with byte-sized values (0 to 255). Originally the frequency data from AnalyzerNode is much larger range. However,
+when using `getByteTimeDomainData`, this data is converted into 8-bit integer values to fit into byte-sized elements of a `Uint8Array`.
+Following on that, we are calculating average magnitude which represents the average energy level of the frequency spectrum. Since the values
+in `magnitudes` range from 0 to 255, dividing by 128 normalizes the average to a range where 1 represents a high magnitude and value closer to 0
+represents a lower magnitude.
+
+The only thing is left to stitch together into bad-ass looking custom hook:
+
+<CodeBlock>
+```javascript
+
+function useIsAudioActive({source, fftSize = 2048}) {
+    const [isOn, setIsOn] = React.useState(false)
+
+    React.useEffect(() => {
+        if (!source) return
+
+        const audioCtx = new AudioContext()
+        
+        const analyzer = audioCtx.createAnalyser()
+        analyser.fftSize = fftSize
+
+        const audioSource = audioCtx.createAudioSource(source)
+        audioSource.connect(analyser)
+
+        const halfFFT = analyser.frequencyBinCount
+        const magnitudes = new Uint8Array(halfFFT) 
+
+        update()
+
+        function update() {
+            analyser.getByteTimeDomainData(magnitudes)
+
+            const sum = magnitudes.reduce((a, b) => a + b, 0)
+            const average = sum / magnitudes.length
+            const normalized = average / 128
+
+            if (normalized >= 1) {
+                setIsOn(true)
+                setTimeout(() => setIsOn(false), 1000)
+            }
+
+            requestAnimationFrame(update)
+        } 
+
+        return () => {
+            setIsOn(false)
+        }
+    }, [source])
+
+    return isOn
+}
+
+```
+</CodeBlock>
+
+Finally, the simple usage of the hook would be as below:
+
+<CodeBlock>
+```javascript
+
+function YourComponent() {
+    const [stream, setStream] = React.useState(null)
+    const isUserSpeaking = useIsAudioActive({source: stream})
+
+    React.useEffect(() => {
+        (async function createStream() {
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+                setStream(s)          
+            } catch (error) {
+                console.error(error)
+            }
+        })()
+    }, [])
+
+    return (
+        <span>
+            Am I speaking just now: {
+                isUserSpeaking ? 
+                "Yes, you are" : 
+                "Nope, you are being silent"
+            }
+        </span>
+    )
+}
+```
+</CodeBlock>
