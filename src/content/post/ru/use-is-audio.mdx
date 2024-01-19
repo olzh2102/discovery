@@ -1,0 +1,188 @@
+---
+layout: ../../../layouts/PostLayout.astro
+title: Хук для распознования звука как в Google Meet 
+date: 2024-01-10
+authors: ["Олжас Куриков"]
+description: Использование WebAudio API для распознованния звука
+draft: false
+category: ReactJS
+slug: use-is-audio-soviet
+tags: ["javascript", "react", "webaudio"]
+heroImageUrl: /posts/use-is-audio/hero.png
+---
+
+import Quote from "@components/Quote.astro";
+import CodeBlock from "@components/CodeBlock.tsx";
+
+Вы, скорее всего, видели в Google Meet, что когда пользователь активно разговаривает, 
+в верхнем правом углу появляется маленький эквалайзер, тем самым обозначая, 
+что пользователь активно участвует в разговоре. 
+Сегодня мы займемся имплементацией и постараемся понять, 
+как это можно сделать и инкапсулировать в кастомный хук для дальнейшего переиспользования.
+
+## TL;DR
+Если не хотите тратить свое время и понять концепцию, можете npm пакет и начать использовать:
+<div class="mt-5 [&>*]:flex [&>*]:gap-1.5 [&>*]:items-center">
+  Ссылка на NPM: [![repo](/images/npm.svg)](https://www.npmjs.com/package/use-is-audio-active)
+</div>
+
+### Arrangement
+
+Конечно для работы с аудио, мы должны использовать `WebAudio API`, а точнее `AudioContext` интерфейс. 
+Если посмотреть определение `AudioContext` в `MDN`:
+
+<Quote variant="info">
+    Интерфейс AudioContext можно представить как граф, 
+    состоящий из связанных между собой узлов AudioNode. 
+    С помощью этого интерфейса можно контролировать как создание узлов, 
+    из которых состоит AudioContext, так и контролировать обработку и 
+    декодирование звука. Необходимо создать AudioContext перед тем как 
+    делать что-либо ещё со звуком, так как всё что происходит при обработке звука, происходит внутри AudioContext.
+    AudioContext может выступать как обработчик событий, и он реализует интерфейс EventTarget.
+</Quote>
+
+Прежде чем приступить к обработке аудио, необходимо создать новый `AudioContext`. 
+Можно представить это как цифровую аудиостудию, где можно создавать, соединять и управлять аудио. 
+Одним из основных инструментов в этой студии является `Analyser`; проще говоря, это аудиомикроскоп, 
+который позволяет вам внимательно изучать звук и видеть, что происходит внутри него. НО... чтобы работать с аудио в студии, 
+нам нужно иметь само аудио, с которым можно работать.
+
+<CodeBlock client:load>
+    ```typescript
+
+    const audioCtx = new AudioContext() // workshop
+       
+    const analyser = audioCtx.createAnalyser() // "audio microscope" in the workship
+    analyser.fftSize = 2048 // fft size comes as argument from outside, bigger number - more sensitive
+
+    const audioSource = audioCtx.createMediaStreamSource(source) // source comes as argument from outside (stream with video/audio)
+    audioSource.connect(analyser) // using the tool to investigate the audio
+    ```
+</CodeBlock>
+
+Теперь, поскольку мы хотим знать, 
+говорит ли пользователь в данный момент, 
+то есть какова величина аудиочастоты, нам нужно отсечь вторую половину выходных данных `FFT` 
+(есть сложное объяснение, почему выходные данные именно такие; если вы хотите узнать больше об этом, вот [ссылка](https://brianmcfee.net/dstbook-site/content/ch06-dft-properties/Conjugate-Symmetry.html)).
+
+<CodeBlock>
+    ```typescript
+
+    const halfFFT = analyser.frequencyBinCount
+    const magnitudes = new Uint8Array(halfFFT) // array of length of halfFFT filled with 0's
+    ```
+</CodeBlock>
+
+### Action
+
+Отлично! Давайте напишем простую функцию, которая будет вызываться на каждом кадре анимации. 
+Эта функция будет анализировать аудиоданные и определять, говорит ли пользователь в данный момент.
+
+<CodeBlock>
+    ```typescript
+
+    function update() {
+        analyser.getByteTimeDomainData(magnitudes)
+
+        const sum = magnitudes.reduce((a, b) => a + b, 0)
+        const average = sum / magnitudes.length
+        const normalized = average / 128
+
+        if (normalized >= 1) // person is speaking
+
+        requestAnimationFrame(update)
+    }
+    ```
+</CodeBlock>
+
+Если вы помните, ранее мы создали массив `magnitudes`, первоначально заполненный нулями. 
+И вышеупомянутый метод `getByteTimeDomainData` анализатора заполняет этот массив байтовыми значениями (от 0 до 255). 
+Исходные данные частоты от `AnalyzerNode` имеют гораздо больший диапазон. 
+Однако при использовании `getByteTimeDomainData` эти данные преобразуются в 8-битные целочисленные значения, 
+чтобы поместиться в байтовые элементы массива `Uint8Array`. 
+Далее мы вычисляем среднюю величину, которая представляет средний уровень амплитуды спектра частот. 
+Поскольку значения в `magnitudes` варьируются от 0 до 255, 
+деление на `128` нормализует среднее к диапазону, где 1 представляет высокую величину, а значение, близкое к 0, представляет более низкую величину.
+
+Осталось только собрать все вместе в крутой кастомный хук:
+
+<CodeBlock>
+```javascript
+
+function useIsAudioActive({source, fftSize = 2048}) {
+    const [isOn, setIsOn] = React.useState(false)
+
+    React.useEffect(() => {
+        if (!source) return
+
+        const audioCtx = new AudioContext()
+        
+        const analyzer = audioCtx.createAnalyser()
+        analyser.fftSize = fftSize
+
+        const audioSource = audioCtx.createAudioSource(source)
+        audioSource.connect(analyser)
+
+        const halfFFT = analyser.frequencyBinCount
+        const magnitudes = new Uint8Array(halfFFT) 
+
+        update()
+
+        function update() {
+            analyser.getByteTimeDomainData(magnitudes)
+
+            const sum = magnitudes.reduce((a, b) => a + b, 0)
+            const average = sum / magnitudes.length
+            const normalized = average / 128
+
+            if (normalized >= 1) {
+                setIsOn(true)
+                setTimeout(() => setIsOn(false), 1000)
+            }
+
+            requestAnimationFrame(update)
+        } 
+
+        return () => {
+            setIsOn(false)
+        }
+    }, [source])
+
+    return isOn
+}
+
+```
+</CodeBlock>
+
+Наконец, простое использование хука будет выглядеть следующим образом:
+
+<CodeBlock>
+```javascript
+
+function YourComponent() {
+    const [stream, setStream] = React.useState(null)
+    const isUserSpeaking = useIsAudioActive({source: stream})
+
+    React.useEffect(() => {
+        (async function createStream() {
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+                setStream(s)          
+            } catch (error) {
+                console.error(error)
+            }
+        })()
+    }, [])
+
+    return (
+        <span>
+            Am I speaking just now: {
+                isUserSpeaking ? 
+                "Yes, you are" : 
+                "Nope, you are being silent"
+            }
+        </span>
+    )
+}
+```
+</CodeBlock>
